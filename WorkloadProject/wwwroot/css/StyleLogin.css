@@ -1,0 +1,23 @@
+﻿body {
+    background-image: url("../images/137.png");
+    padding-right: 550px;
+}
+.field {
+    clear: both;
+    text-align: right;
+    line-height: 20px;
+}
+label {
+    float: left;
+    padding-right: 10px;
+}
+.main {
+    float: left;
+}
+footer {
+    position: fixed;
+    top: 50%;
+}
+.button {
+    float: left;
+}

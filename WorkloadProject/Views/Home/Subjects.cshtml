@@ -1,0 +1,55 @@
+﻿<link rel="stylesheet" type="text/css" href="~/css/styleAdmin.css">
+<script src="~/js/showWindowsAdmin.js"></script>
+
+@using WorkloadProject.Models;
+@using Microsoft.EntityFrameworkCore
+<br /> <br />
+<div>
+    <button id="buttonActionSubject" class="secondButton" onclick="showAddSubject('block')">Add Subject</button>
+    <button id="buttonActionSubject" class="secondButton" onclick="showDeleteSubject('block')">Delete Subject</button>
+</div>
+    <div onclick="hideAllWindows()" id="mainWindow"></div>
+    <div id="secondWindowAddSubject" class="secondWindow">
+
+        <img class="close" onclick="showAddSubject('none')" src="~/images/close.jpg" />
+        <form asp-controller="Home" asp-action="AddSubject" method="post" class="hiddenForm">
+            <label>Название:</label>
+            <input type="text" name="subjectName" maxlength="50" size="30" />
+            <br><br>
+            <input type="submit" class="formSubmit" value="Добавить" />
+        </form>
+    </div>
+    <div id="secondWindowDeleteSubject" class="secondWindow">
+
+        <img class="close" onclick="showDeleteSubject('none')" src="~/images/close.jpg" />
+        <form asp-controller="Home" asp-action="DeleteSubject" class="hiddenForm">
+            <label>Название:</label>
+            <select class="form-control" name="subjectId" style="width: 260px; float: right;">
+                @foreach (Subject item in ViewBag.Subjects)
+            {
+                    <option value="@item.Id">@item.Name</option>
+                }
+            </select>
+            <br><br>
+            <input type="submit" class="formSubmit" value="Удалить" />
+        </form>
+    </div>
+    <h3>Subjects</h3>
+    <table class="table" border="1">
+        <tr>
+            <td>Id</td>
+            <td>Name</td>
+        </tr>
+        @foreach (Subject subject in ViewBag.Subjects)
+        {
+            <tr>
+                <td>
+                    @subject.Id
+                </td>
+                <td>
+                    @subject.Name
+                </td>
+            </tr>
+
+        }
+    </table>

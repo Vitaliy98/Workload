@@ -1,0 +1,27 @@
+﻿<link rel="stylesheet" type="text/css" href="~/css/styleAdmin.css">
+<script src="~/js/showWindowsAdmin.js"></script>
+
+@using WorkloadProject.Models;
+@using Microsoft.EntityFrameworkCore
+
+<h3>Journal:</h3> <br>
+<table class="table" border="1">
+    <tr>
+        <td>Ф.И.О преподавателя</td>
+        <td>Дата</td>
+        <td>Время</td>
+        <td>Занятие</td>
+        <td>Тема</td>
+    </tr>
+    @foreach (Journal item in ViewBag.Journal)
+    {
+        <tr>
+            <td>@item.Lesson.Teacher.Surname @item.Lesson.Teacher.FirstName.First().@item.Lesson.Teacher.MiddleName.First()</td>
+            <td>@item.Date.ToShortDateString()</td>
+            <td>@item.TimeLesson.Time.ToShortTimeString()</td>
+            <td>@item.Lesson.Subject.Name (@item.Lesson.TypeLesson.Name)</td>
+            <td>@item.Theme</td>
+        </tr>
+    }
+</table>
+

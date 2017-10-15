@@ -1,108 +1,238 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿<link rel="stylesheet" type="text/css" href="css/styleAdmin.css">
+<script src="~/js/showWindowsAdmin.js"></script>
+@using WorkloadProject.Models;
+@using Microsoft.EntityFrameworkCore
+@{ 
+    ViewBag.Title = "Workload";
+    int[] arrayOfHoursWorked = GetHoursWorked();
+    int[] arrayOfHourLoad = GetHourLoad();
+    int[] arrayOfProcentHoursWorked = GetProcentHoursWorked(GetHoursWorked(), GetHourLoad());
+    List<Teacher> listOfTeachers = ViewBag.Teachers;
+    Teacher te = null;
 }
+@model IEnumerable<Lesson>
+<br>
 
-<div id="myCarousel" class="carousel slide" data-ride="carousel" data-interval="6000">
-    <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-        <li data-target="#myCarousel" data-slide-to="3"></li>
-    </ol>
-    <div class="carousel-inner" role="listbox">
-        <div class="item active">
-            <img src="~/images/banner1.svg" alt="ASP.NET" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Learn how to build ASP.NET apps that can run anywhere.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525028&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner2.svg" alt="Visual Studio" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    There are powerful new features in Visual Studio for building modern web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525030&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner3.svg" alt="Package Management" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Bring in libraries from NuGet, Bower, and npm, and automate tasks using Grunt or Gulp.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525029&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-        <div class="item">
-            <img src="~/images/banner4.svg" alt="Microsoft Azure" class="img-responsive" />
-            <div class="carousel-caption" role="option">
-                <p>
-                    Learn how Microsoft's Azure cloud platform allows you to build, deploy, and scale web apps.
-                    <a class="btn btn-default" href="https://go.microsoft.com/fwlink/?LinkID=525027&clcid=0x409">
-                        Learn More
-                    </a>
-                </p>
-            </div>
-        </div>
-    </div>
-    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
+<div onclick="hideAllWindows()" id="mainWindow"></div>
+<div id="secondWindowAddWorkload" class="secondWindow">
+
+    <img class="close" onclick="showAddWorkload('none')" src="~/images/close.jpg" />
+    <form  asp-controller="Home" asp-action="CreateLesson" method="post" class="hiddenForm">
+            <label>Ф.И.О:</label>
+            <select class="form-control" name="teacherId" style="width: 260px; float: right;">
+                @foreach (Teacher item in ViewBag.Teachers)
+                 {
+                    te = @item;
+                    <option value="@item.Id">@item.Surname @item.FirstName.First().@item.MiddleName.First()</option>
+                 }
+            </select>
+            <br><br>
+            <label>Предмет:</label>
+            <select class="form-control" name="subjectId" style="width: 260px; float: right;">
+                @foreach (Subject item in ViewBag.Subjects)
+                 {
+                    <option value="@item.Id">@item.Name</option>
+                 }
+            </select>
+            <br><br>
+            <label>Тип занятия:</label>
+            <select class="form-control" name="typeLessonId" style="width: 260px; float: right;">
+                @foreach (TypeLesson item in ViewBag.TypeLessons)
+                 {
+                    <option value="@item.Id">@item.Name</option>
+                 }
+            </select>
+            <br><br>
+            <label>Часы:</label>
+            <input type="text" name="hourLoad" maxlength="50" size="31" />
+            <br><br>
+            <input type="submit" class="btn btn-success" value="Добавить" />
+    </form>
 </div>
 
-<div class="row">
-    <div class="col-md-3">
-        <h2>Application uses</h2>
-        <ul>
-            <li>Sample pages using ASP.NET Core MVC</li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=518004">Bower</a> for managing client-side libraries</li>
-            <li>Theming using <a href="https://go.microsoft.com/fwlink/?LinkID=398939">Bootstrap</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>How to</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398600">Add a Controller and View</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699315">Manage User Secrets using Secret Manager.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699316">Use logging to log a message.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699317">Add packages using NuGet.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699318">Add client packages using Bower.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699319">Target development, staging or production environment.</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>Overview</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=518008">Conceptual overview of what is ASP.NET Core</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=699320">Fundamentals of ASP.NET Core such as Startup and middleware.</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398602">Working with Data</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkId=398603">Security</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699321">Client side development</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699322">Develop on different platforms</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=699323">Read more on the documentation site</a></li>
-        </ul>
-    </div>
-    <div class="col-md-3">
-        <h2>Run &amp; Deploy</h2>
-        <ul>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517851">Run your app</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=517853">Run tools such as EF migrations and more</a></li>
-            <li><a href="https://go.microsoft.com/fwlink/?LinkID=398609">Publish to Microsoft Azure Web Apps</a></li>
-        </ul>
-    </div>
+<div id="secondWindowChangeWorkload" class="secondWindow">
+
+    <img class="close" onclick="showChangeWorkload('none')" src="~/images/close.jpg" />
+    <form asp-controller="Home" asp-action="ChangeLesson" method="post" class="hiddenForm">
+        <label>Нагрузка:</label>
+        <select class="form-control" name="lessonId" style="width: 260px; float: right;">
+            @foreach (Lesson lesson in Model)
+             {
+                  <option value="@lesson.Id">@lesson.Subject.Name (@lesson.TypeLesson.Name)</option>
+             }
+        </select>
+        <br><br>
+        <label>Ф.И.О:</label>
+        <select class="form-control" name="teacherId" style="width: 260px; float: right;">
+            @foreach (Teacher item in ViewBag.Teachers)
+            {
+                <option value="@item.Id">@item.Surname @item.FirstName.First().@item.MiddleName.First()</option>
+            }
+        </select>
+        <br><br>
+        <label>Часы:</label>
+        <input type="text" name="hourLoad" maxlength="50" size="31" />
+        <br><br>
+        <input type="submit" class="btn btn-success" value="Изменить" />
+    </form>
 </div>
+
+
+<div id="secondWindowDeleteWorkload" class="secondWindow">
+
+    <img class="close" onclick="showDeleteWorkload('none')" src="~/images/close.jpg" />
+    <form asp-controller="Home" asp-action="DeleteLesson" method="post" class="hiddenForm">
+        <label>Ф.И.О:</label>
+        <select class="form-control" name="teacherId" style="width: 260px; float: right;">
+            @foreach (Teacher item in ViewBag.Teachers)
+            {
+                <option value="@item.Id">@item.Surname @item.FirstName.First().@item.MiddleName.First()</option>
+            }
+        </select>
+        <br><br>
+        <label>Предмет:</label>
+        <select class="form-control" name="subjectId" style="width: 260px; float: right;">
+            @foreach (Subject item in ViewBag.Subjects)
+            {
+                <option value="@item.Id">@item.Name</option>
+            }
+        </select>
+        <br><br>
+        <label>Тип занятия:</label>
+        <select class="form-control" name="typeLessonId" style="width: 260px; float: right;">
+            @foreach (TypeLesson item in ViewBag.TypeLessons)
+            {
+                <option value="@item.Id">@item.Name</option>
+            }
+        </select>
+        <br><br>
+        <input type="submit" class="formSubmit" value="Удалить" />
+    </form>
+</div>
+
+
+
+    <div display: inline-block;>
+        <button id="buttonAddWorkload" class="secondButton" onclick="showAddWorkload('block')" >Add Workload</button>
+        <button id="buttonChangeWorkload" class="secondButton" onclick="showChangeWorkload('block')">Change Workload</button>
+        <button id="buttonDeleteWorkload" class="secondButton" onclick="showDeleteWorkload('block')">Delete Workload</button>
+        <button id="buttonUpdateStatistics" class="secondButton">Update Statistics</button>
+    </div>
+<div class="userInfo" display: inline-block;>
+    <h4 class="userInfo" >Welcome @ViewBag.User.FirstName</h4>
+</div>
+    <br><br>
+<h3>Workload:</h3> <br>
+    <table class="table" border="1">
+        <tr>
+            <td></td>
+            @foreach (Lesson item in Model)
+            {
+            <td>@item.Subject.Name (@item.TypeLesson.Name)</td>
+            }
+        </tr>
+        @foreach (Teacher item in ViewBag.Teachers)
+        {
+        <tr>
+            <td>@item.Surname @item.FirstName.First().@item.MiddleName.First()</td>
+            @foreach (Lesson les in Model)
+                {
+                    if (@les.Teacher.FirstName == item.FirstName && @les.Teacher.MiddleName == @item.MiddleName && @les.Teacher.Surname == @item.Surname)
+                    {
+                <td>@les.HoursWorked h. of @les.HourLoad h.</td>
+                    }
+                    else
+                    {
+                <td>-</td>
+                    }
+                }
+        </tr>
+        }
+    </table>
+<h3>Statistics:</h3> <br>
+    <div id="Statistics" class="statistics">
+        <table class="tableStatistic" border="1">
+            @for (int i = 0; i < listOfTeachers.Count(); i++)
+ {
+        <tr>
+            <td>@listOfTeachers.ElementAt(i).Surname @listOfTeachers.ElementAt(i).FirstName.First().@listOfTeachers.ElementAt(i).MiddleName.First()</td>
+            <td>
+                <div style='background-color:#20B2AA;display: inline-block;width:@GetWidthStatistic(@arrayOfProcentHoursWorked[i])px'>
+                    &nbsp;
+                    &nbsp;
+                    @if(@GetWidthStatistic(@arrayOfProcentHoursWorked[i]) != 0)
+                    {
+                    <text>@arrayOfHoursWorked[i] of @arrayOfHourLoad[i]</text>
+                    }
+
+                </div>
+                &nbsp;
+                @arrayOfProcentHoursWorked[i]%
+            </td>
+        </tr>
+}
+        </table>
+    </div>
+    <br>
+
+    @functions
+    {
+        public int[] GetHoursWorked()
+        {
+            List<Teacher> listOfTeachers = ViewBag.Teachers;
+            int[] arrayOfHoursWorked = new int[listOfTeachers.Count()];
+            for (int i = 0; i < listOfTeachers.Count(); i++)
+            {
+                foreach (Lesson les in Model)
+                {
+                    if (@les.Teacher.FirstName == listOfTeachers.ElementAt(i).FirstName && @les.Teacher.MiddleName == listOfTeachers.ElementAt(i).MiddleName
+                        && @les.Teacher.Surname == listOfTeachers.ElementAt(i).Surname)
+                    {
+                        arrayOfHoursWorked[i] += les.HoursWorked;
+                    }
+                }
+            }
+            return arrayOfHoursWorked;
+        }
+        public int[] GetHourLoad()
+        {
+            List<Teacher> listOfTeachers = ViewBag.Teachers;
+            int[] arrayOfHourLoad = new int[listOfTeachers.Count()];
+            for (int i = 0; i < listOfTeachers.Count(); i++)
+            {
+                foreach (Lesson les in Model)
+                {
+                    if (@les.Teacher.FirstName == listOfTeachers.ElementAt(i).FirstName && @les.Teacher.MiddleName == listOfTeachers.ElementAt(i).MiddleName
+                        && @les.Teacher.Surname == listOfTeachers.ElementAt(i).Surname)
+                    {
+                        arrayOfHourLoad[i] += les.HourLoad;
+                    }
+                }
+            }
+            return arrayOfHourLoad;
+        }
+        public int[] GetProcentHoursWorked(int[] arrayOfHoursWorked, int[] arrayOfHourLoad)
+        {
+            List<Teacher> listOfTeachers = ViewBag.Teachers;
+            int[] arrayOfProcentHoursWorked = new int[listOfTeachers.Count()];
+            double secondValue = 0;
+            for (int i = 0; i < arrayOfHoursWorked.Length; i++)
+            {
+                if (arrayOfHourLoad[i] != 0)
+                {
+                    secondValue = (arrayOfHoursWorked[i] * 100) / arrayOfHourLoad[i];
+                    arrayOfProcentHoursWorked[i] = (int)Math.Ceiling(secondValue);
+                }
+                else
+                {
+                    arrayOfProcentHoursWorked[i] = 0;
+                }
+            }
+            return arrayOfProcentHoursWorked;
+        }
+        public int GetWidthStatistic(int procentHoursWorked)
+        {
+            double secondValue = (procentHoursWorked * 750) / 100;
+            return (int)Math.Ceiling(secondValue);
+        }
+    }

@@ -1,0 +1,114 @@
+﻿body {
+    background-image: url("../images/137.png");
+    padding-right: 550px;
+}
+
+.secondButton {
+    width: 14%;
+    height: 50px;
+    margin: 0;
+    padding: 0;
+    border-radius: 20px 5px;
+    text-align: center;
+    background-color: #fffaf0;
+}
+
+    .secondButton:hover {
+        border-radius: 20px 5px;
+        background-color: #0066FF;
+    }
+
+#mainWindow {
+    display: none;
+    opacity: 0.8;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    padding: 16px;
+    background-color: rgba(1, 1, 1, 0.725);
+    z-index: 100;
+    overflow: auto;
+}
+
+.secondWindow {
+    width: 400px;
+    height: 450px;
+    margin: 50px auto;
+    display: none;
+    background: #fff;
+    z-index: 200;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    padding: 16px;
+    text-align: right;
+
+}
+
+.close {
+    margin-left: 364px;
+    margin-top: 0px;
+    cursor: pointer;
+    padding-bottom: 14px;
+}
+
+.field {
+    width: 300px;
+    height: 30px;
+}
+
+.statistics {
+    width: 800px;
+    height: 200px;
+    border-radius: 10px;
+    border: 3px solid #000;
+    height: auto !important;
+    padding: 0px;
+}
+
+.userInfo {
+    margin: 0% 0 3% 60%;
+    width: 40%;
+    display: inline-block;
+    float : right;
+
+}
+
+.changeLanguage {
+    width: 10%;
+    height: 20px;
+}
+.table {
+    border: solid;
+    
+    border-color: black;
+    padding-left: 20px;
+    width: 60%;
+}
+.tableStatistic {
+    width: 100%;
+    height: auto !important;
+    padding: 0px;
+    margin: 5px;
+    border: 5px solid;
+    border-color: transparent;
+}
+.formSubmit {
+    float: left;
+    width: 100px;
+    height: 28px;
+    margin-left: 35px;
+}
+.hiddenForm {
+    clear: both;
+    text-align: right;
+    line-height: 25px;
+}
+label {
+    float: left;
+    padding-right: 10px;
+}

@@ -1,0 +1,121 @@
+﻿<link rel="stylesheet" type="text/css" href="~/css/styleAdmin.css">
+<script src="~/js/showWindowsAdmin.js"></script>
+
+@using WorkloadProject.Models;
+@using Microsoft.EntityFrameworkCore
+<br /> <br />
+<div>
+    <button id="buttonAddUser" class="secondButton" onclick="showAddUser('block')">Add Teacher</button>
+    <button id="buttonChangeUser" class="secondButton" onclick="showChangeUser('block')">Change Teacher</button>
+    <button id="buttonDeleteUser" class="secondButton" onclick="showDeleteUser('block')">Delete Teacher</button>
+</div>
+<div onclick="hideAllWindows()" id="mainWindow"></div>
+<div id="secondWindowAddUser" class="secondWindow">
+
+    <img class="close" onclick="showAddUser('none')" src="~/images/close.jpg" />
+    <form asp-controller="Home" asp-action="AddUser" method="post" class="hiddenForm">
+        <label>Фамилия:</label>
+        <input type="text" name="surname" maxlength="50" size="30" />
+        <br><br>
+        <label>Имя:</label>
+        <input type="text" name="firstName" maxlength="50" size="30" />
+        <br><br>
+        <label>Отчество:</label>
+        <input type="text" name="middleName" maxlength="50" size="30" />
+        <br><br>
+        <label>Должность:</label>
+        <select class="form-control" name="typeLessonId" style="width: 250px; float: right;">
+            @foreach (Position item in ViewBag.Positions)
+            {
+                <option value="@item.Id">@item.Name</option>
+            }
+        </select>
+        <br><br>
+        <label>E-mail:</label>
+        <input type="text" name="email" maxlength="50" size="30" />
+        <br><br>
+        <label>Пароль:</label>
+        <input type="text" name="password" maxlength="50" size="30" />
+        <br><br>
+        <input type="submit" class="formSubmit" value="Добавить" />
+    </form>
+</div>
+
+<div id="secondWindowChangeUser" class="secondWindow">
+
+    <img class="close" onclick="showChangeUser('none')" src="~/images/close.jpg" />
+    <form asp-controller="Home" asp-action="ChangeUser" method="post" class="hiddenForm">
+        <label>Ф.И.О:</label>
+        <select class="form-control" name="teacherId" style="width: 250px; float: right;">
+            @foreach (Teacher item in ViewBag.Teachers)
+            {
+                <option value="@item.Id">@item.Surname @item.FirstName.First().@item.MiddleName.First()</option>
+            }
+        </select>
+        <br><br>
+        <label>Новый пароль:</label>
+        <input type="text" name="password" maxlength="50" size="30" />
+        <br><br>
+        <input type="submit" class="formSubmit" value="Изменить" />
+    </form>
+</div>
+
+<div id="secondWindowDeleteUser" class="secondWindow">
+
+    <img class="close" onclick="showDeleteUser('none')" src="~/images/close.jpg" />
+    <form asp-controller="Home" asp-action="DeleteUser" method="post" class="hiddenForm">
+        <label>Ф.И.О:</label>
+        <select class="form-control" name="teacherId" style="width: 260px; float: right;">
+            @foreach (Teacher item in ViewBag.Teachers)
+            {
+                <option value="@item.Id">@item.Surname @item.FirstName.First().@item.MiddleName.First()</option>
+            }
+        </select>
+        <br><br>
+        <input type="submit" class="formSubmit" value="Удалить" />
+    </form>
+</div>
+<br/><br />
+<h3>Teachers</h3>
+<table class="table" border="1">
+    <tr>
+        <td>Id</td>
+        <td>FirstName</td>
+        <td>MiddleName</td>
+        <td>Surname</td>
+        <td>Position</td>
+        <td>Email</td>
+        <td>Password</td>
+        <td>IsAdmin</td>
+    </tr>
+    @foreach (Teacher item in ViewBag.Teachers)
+    {
+        <tr>
+            <td>
+                @item.Id
+            </td>
+            <td>
+                @item.FirstName
+            </td>
+            <td>
+                @item.MiddleName
+            </td>
+            <td>
+                @item.Surname
+            </td>
+            <td>
+                @item.position.Name
+            </td>
+            <td>
+                @item.Email
+            </td>
+            <td>
+                @item.Password
+            </td>
+            <td>
+                @item.IsAdmin
+            </td>
+        </tr>
+
+    }
+</table>
