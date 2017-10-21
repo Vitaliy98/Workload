@@ -6,8 +6,6 @@
 <br /> <br />
 <div>
     <button id="buttonAddUser" class="secondButton" onclick="showAddUser('block')">Add Teacher</button>
-    <button id="buttonChangeUser" class="secondButton" onclick="showChangeUser('block')">Change Teacher</button>
-    <button id="buttonDeleteUser" class="secondButton" onclick="showDeleteUser('block')">Delete Teacher</button>
 </div>
 <div onclick="hideAllWindows()" id="mainWindow"></div>
 <div id="secondWindowAddUser" class="secondWindow">
@@ -24,7 +22,7 @@
         <input type="text" name="middleName" maxlength="50" size="30" />
         <br><br>
         <label>Должность:</label>
-        <select class="form-control" name="typeLessonId" style="width: 250px; float: right;">
+        <select class="form-control" name="positionId" style="width: 250px; float: right;">
             @foreach (Position item in ViewBag.Positions)
             {
                 <option value="@item.Id">@item.Name</option>
@@ -43,19 +41,32 @@
 
 <div id="secondWindowChangeUser" class="secondWindow">
 
-    <img class="close" onclick="showChangeUser('none')" src="~/images/close.jpg" />
-    <form asp-controller="Home" asp-action="ChangeUser" method="post" class="hiddenForm">
-        <label>Ф.И.О:</label>
-        <select class="form-control" name="teacherId" style="width: 250px; float: right;">
-            @foreach (Teacher item in ViewBag.Teachers)
+    <img class="close" onclick="showChangeUser('none', null, null, null, null, null, null, null)" src="~/images/close.jpg" />
+    <form asp-controller="Home" asp-action="ChangeUser" name="ChangeUserForm" method="post" class="hiddenForm">
+        <label>Фамилия:</label>
+        <input type="text" name="surname" id="Surname" maxlength="50" size="31" />
+        <br><br>
+        <label>Имя:</label>
+        <input type="text" name="firstName" id="FirstName" maxlength="50" size="31" />
+        <br><br>
+        <label>Отчество:</label>
+        <input type="text" name="middleName" id="MiddleName" maxlength="50" size="31" />
+        <br><br>
+        <label>Должность:</label>
+        <select class="form-control" name="positionId" id="Position" style="width: 250px; float: right;">
+            @foreach (Position item in ViewBag.Positions)
             {
-                <option value="@item.Id">@item.Surname @item.FirstName.First().@item.MiddleName.First()</option>
+                <option value="@item.Id">@item.Name</option>
             }
         </select>
         <br><br>
-        <label>Новый пароль:</label>
-        <input type="text" name="password" maxlength="50" size="30" />
+        <label>Email:</label>
+        <input type="text" name="email" id="Email" maxlength="50" size="31" />
         <br><br>
+        <label>Пароль:</label>
+        <input type="text" name="password" id="Password" maxlength="50" size="31" />
+        <br><br>
+        <input type="hidden" name="teacherId" id="TeacherId" />
         <input type="submit" class="formSubmit" value="Изменить" />
     </form>
 </div>
@@ -87,6 +98,8 @@
         <td>Email</td>
         <td>Password</td>
         <td>IsAdmin</td>
+        <td></td>
+        <td></td>
     </tr>
     @foreach (Teacher item in ViewBag.Teachers)
     {
@@ -114,6 +127,13 @@
             </td>
             <td>
                 @item.IsAdmin
+            </td>
+            <td>
+                <a href="javascript:showChangeUser('block', '@item.FirstName', '@item.MiddleName', '@item.Surname','@item.position.Id',
+                   '@item.Email', '@item.Password', '@item.Id')">Изменить</a>
+            </td>
+            <td>
+                <a asp-controller="Home" asp-action="DeleteUser" method="post" asp-route-teacherId="@item.Id">Удалить</a>
             </td>
         </tr>
 

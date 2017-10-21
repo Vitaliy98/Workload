@@ -9,6 +9,7 @@
     int[] arrayOfProcentHoursWorked = GetProcentHoursWorked(GetHoursWorked(), GetHourLoad());
     List<Teacher> listOfTeachers = ViewBag.Teachers;
     Teacher te = null;
+    
 }
 @model IEnumerable<Lesson>
 <br>
@@ -35,16 +36,11 @@
                  }
             </select>
             <br><br>
-            <label>Тип занятия:</label>
-            <select class="form-control" name="typeLessonId" style="width: 260px; float: right;">
-                @foreach (TypeLesson item in ViewBag.TypeLessons)
-                 {
-                    <option value="@item.Id">@item.Name</option>
-                 }
-            </select>
+            <label>Практ. часы:</label>
+             <input type="text" name="PractHourLoad" maxlength="50" size="31" />
             <br><br>
-            <label>Часы:</label>
-            <input type="text" name="hourLoad" maxlength="50" size="31" />
+            <label>Лекц. часы:</label>
+            <input type="text" name="LectHourLoad" maxlength="50" size="31" />
             <br><br>
             <input type="submit" class="btn btn-success" value="Добавить" />
     </form>

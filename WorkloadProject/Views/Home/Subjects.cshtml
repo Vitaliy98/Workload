@@ -6,7 +6,6 @@
 <br /> <br />
 <div>
     <button id="buttonActionSubject" class="secondButton" onclick="showAddSubject('block')">Add Subject</button>
-    <button id="buttonActionSubject" class="secondButton" onclick="showDeleteSubject('block')">Delete Subject</button>
 </div>
     <div onclick="hideAllWindows()" id="mainWindow"></div>
     <div id="secondWindowAddSubject" class="secondWindow">
@@ -19,6 +18,18 @@
             <input type="submit" class="formSubmit" value="Добавить" />
         </form>
     </div>
+<div id="secondWindowChangeSubject" class="secondWindow">
+
+    <img class="close" onclick="showChangeSubject('none', null)" src="~/images/close.jpg" />
+    <form asp-controller="Home" asp-action="ChangeSubject" class="hiddenForm">
+        <label>Новое Название:</label>
+        <input type="text" name="subjectName" maxlength="50" size="30" />
+        <br><br>
+        <input type="hidden" name="subjectId" id="hiddenSubjectId"/>
+        <input type="submit" class="formSubmit" value="Изменить" />
+    </form>
+</div>
+
     <div id="secondWindowDeleteSubject" class="secondWindow">
 
         <img class="close" onclick="showDeleteSubject('none')" src="~/images/close.jpg" />
@@ -39,6 +50,8 @@
         <tr>
             <td>Id</td>
             <td>Name</td>
+            <td></td>
+            <td></td>
         </tr>
         @foreach (Subject subject in ViewBag.Subjects)
         {
@@ -48,6 +61,12 @@
                 </td>
                 <td>
                     @subject.Name
+                </td>
+                <td>
+                    <a href="javascript:showChangeSubject('block', @subject.Id)">Изменить</a>
+                </td>
+                <td>
+                    <a asp-controller="Home" asp-action="DeleteSubject" method="post" asp-route-subjectId="@subject.Id">Удалить</a>
                 </td>
             </tr>
 

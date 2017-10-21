@@ -1,0 +1,54 @@
+﻿<link rel="stylesheet" type="text/css" href="~/css/styleAdmin.css">
+<script src="~/js/showWindowsAdmin.js"></script>
+
+@using WorkloadProject.Models;
+@using Microsoft.EntityFrameworkCore
+@{
+    Layout = "~/Views/Shared/LayoutUser.cshtml";
+}
+<div onclick="hideAllWindows()" id="mainWindow"></div>
+<div id="secondWindowChangeExecLesson" class="secondWindow">
+
+    <img class="close" onclick="showChangeExecLesson('none',null,null,null)" src="~/images/close.jpg" />
+    <form asp-controller="Home" asp-action="ChangeExecLesson" method="post" class="hiddenForm">
+        <input type="hidden" name="lessonId" id="hiddenLessonId" />
+        <input type="hidden" name="date" id="hiddenDate" />
+        <input type="hidden" name="lessonNumber" id="hiddenLessonNumber" />
+        <br><br>
+        <label>Новая тема:</label>
+        <input type="text" name="newTheme" maxlength="50" size="31" />
+        <br><br>
+        <input type="submit" class="btn btn-success" value="Изменить" />
+    </form>
+</div>
+<br><br>
+<div display: inline-block;>
+    <button id="buttonAddExecLesson" class="secondButton" onclick="showAddExecLesson('block')">Add Executed Lesson</button>
+</div>
+<h3>Journal:</h3> <br>
+<table class="table" border="1">
+    <tr>
+        <td>Дата</td>
+        <td>Время</td>
+        <td>Занятие</td>
+        <td>Тема</td>
+        <td></td>
+        <td></td>
+    </tr>
+    @foreach (Journal item in ViewBag.Journal)
+    {
+        <tr>
+            <td>@item.Date.ToShortDateString()</td>
+            <td>@item.TimeLesson.Time.ToShortTimeString()</td>
+            <td>@item.Lesson.Subject.Name (@item.Lesson.TypeLesson.Name)</td>
+            <td>@item.Theme</td>
+            <td>
+                <a href="javascript:showChangeExecLesson('block', @item.Lesson.Id, '@item.Date.ToString()', @item.TimeLesson.Id)">Изменить</a>
+            </td>
+            <td>
+                <a asp-controller="Home" asp-action="DeleteExecLesson" asp-route-lessonId="@item.Lesson.Id" asp-route-date="@item.Date" asp-route-lessonNumber="@item.TimeLesson.Id">Удалить</a>
+            </td>
+        </tr>
+    }
+</table>
+

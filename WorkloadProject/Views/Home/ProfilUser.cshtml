@@ -1,0 +1,69 @@
+﻿<link rel="stylesheet" type="text/css" href="~/css/styleAdmin.css">
+<script src="~/js/showWindowsAdmin.js"></script>
+
+@using WorkloadProject.Models;
+@using Microsoft.EntityFrameworkCore
+@{
+    Layout = "~/Views/Shared/LayoutUser.cshtml";
+    Teacher teacher = (Teacher)ViewBag.User;
+}
+<br /><br />
+<div display: inline-block;>
+    <button id="buttonChangeProfil" class="secondButton" onclick="showChangeProfil('block','@teacher.FirstName','@teacher.MiddleName','@teacher.Surname','@teacher.Email','@teacher.Password')">Change profil</button>
+</div>
+<div onclick="hideAllWindows()" id="mainWindow"></div>
+<div id="secondWindowChangeProfil" class="secondWindow">
+
+    <img class="close" onclick="showChangeProfil('none', null, null, null, null, null)" src="~/images/close.jpg" />
+    <form asp-controller="Home" asp-action="ChangeProfil" method="post" class="hiddenForm">
+        <label>Фамилия:</label>
+        <input type="text" name="surname" id="Surname" maxlength="50" size="31" />
+        <br><br>
+        <label>Имя:</label>
+        <input type="text" name="firstName" id="FirstName" maxlength="50" size="31" />
+        <br><br>
+        <label>Отчество:</label>
+        <input type="text" name="middleName" id="MiddleName" maxlength="50" size="31" />
+        <br><br>
+        <label>Email:</label>
+        <input type="text" name="email" id="Email" maxlength="50" size="31" />
+        <br><br>
+        <label>Пароль:</label>
+        <input type="text" name="password" id="Password" maxlength="50" size="31" />
+        <br><br>
+        <input type="submit" class="btn btn-success" value="Изменить" />
+    </form>
+</div>
+
+
+<h3>Profil:</h3> <br>
+<table class="table" border="1">
+    <tr>
+        <td></td>
+        <td></td>
+    </tr>
+     <tr>
+        <td>First Name</td>
+        <td>@teacher.FirstName</td>
+    </tr>
+    <tr>
+        <td>Middle Name</td>
+        <td>@teacher.MiddleName</td>
+    </tr>
+    <tr>
+        <td>Surname</td>
+        <td>@teacher.Surname</td>
+    </tr>
+    <tr>
+        <td>Position</td>
+        <td>@teacher.position.Name</td>
+    </tr>
+    <tr>
+        <td>Email</td>
+        <td>@teacher.Email</td>
+    </tr>
+    <tr>
+        <td>Password</td>
+        <td>@teacher.Password</td>
+    </tr>
+</table>

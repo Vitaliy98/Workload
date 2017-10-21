@@ -4,7 +4,12 @@ function showAddSubject(state) {
     document.getElementById('secondWindowAddSubject').style.display = state;
     document.getElementById('mainWindow').style.display = state;
 }
+function showChangeSubject(state,subjectId) {
 
+    document.getElementById('secondWindowChangeSubject').style.display = state;
+    document.getElementById('mainWindow').style.display = state;
+    document.getElementById('hiddenSubjectId').value = subjectId;
+}
 function showDeleteSubject(state) {
 
     document.getElementById('secondWindowDeleteSubject').style.display = state;
@@ -15,10 +20,13 @@ function showAddExecLesson(state) {
     document.getElementById('secondWindowAddExecLesson').style.display = state;
     document.getElementById('mainWindow').style.display = state;
 }
-function showChangeExecLesson(state) {
+function showChangeExecLesson(state, lessonId, date, lessonNumber) {
 
     document.getElementById('secondWindowChangeExecLesson').style.display = state;
     document.getElementById('mainWindow').style.display = state;
+    document.getElementById('hiddenLessonId').value = lessonId;
+    document.getElementById('hiddenDate').value = date;
+    document.getElementById('hiddenLessonNumber').value = lessonNumber;
 }
 function showDeleteExecLesson(state) {
 
@@ -31,10 +39,26 @@ function showAddUser(state) {
     document.getElementById('mainWindow').style.display = state;
 }
 
-function showChangeUser(state) {
+function showChangeUser(state, firstName, middleName, surname, positionId, email, password, teacherId) {
 
     document.getElementById('secondWindowChangeUser').style.display = state;
     document.getElementById('mainWindow').style.display = state;
+    document.getElementById('FirstName').value = firstName;
+    document.getElementById('MiddleName').value = middleName;
+    document.getElementById('Surname').value = surname;
+    var i;
+    var index;
+    for (i = 0; i < document.getElementById("Position").length; i++) {
+        if (document.getElementById("Position").options[i].value === positionId)
+        {
+            index = i;
+        }
+    }
+    document.getElementById("Position").options[index].selected = true;
+    document.getElementById('Email').value = email;
+    document.getElementById('Password').value = password;
+    document.getElementById('TeacherId').value = teacherId;
+
 }
 
 function showDeleteUser(state) {
@@ -58,6 +82,16 @@ function showChangeWorkload(state) {
 
     document.getElementById('secondWindowChangeWorkload').style.display = state;
     document.getElementById('mainWindow').style.display = state;
+}
+function showChangeProfil(state, firstName, middleName, surname, email, password) {
+
+    document.getElementById('secondWindowChangeProfil').style.display = state;
+    document.getElementById('mainWindow').style.display = state;
+    document.getElementById('FirstName').value = firstName;
+    document.getElementById('MiddleName').value = middleName;
+    document.getElementById('Surname').value = surname;
+    document.getElementById('Email').value = email;
+    document.getElementById('Password').value = password;
 }
 function hideAllWindows() {
 

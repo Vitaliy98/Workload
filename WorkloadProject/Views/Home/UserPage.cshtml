@@ -3,7 +3,9 @@
 @using WorkloadProject.Models;
 @using Microsoft.EntityFrameworkCore
 @model IEnumerable<Lesson>
-
+@{ 
+    Layout = "~/Views/Shared/LayoutUser.cshtml";
+}
 <br>
 
 <div onclick="hideAllWindows()" id="mainWindow"></div>
@@ -80,13 +82,6 @@
     </form>
 </div>
 
-
-
-<div display: inline-block;>
-    <button id="buttonAddWorkload" class="secondButton" onclick="showAddExecLesson('block')">Add Executed Lesson</button>
-    <button id="buttonChangeWorkload" class="secondButton" onclick="showChangeExecLesson('block')">Change Executed Lesson</button>
-    <button id="buttonDeleteWorkload" class="secondButton" onclick="showDeleteExecLesson('block')">Delete Executed Lesson</button>
-</div>
 <div class="userInfo" display: inline-block;>
     <h4 class="userInfo">Welcome @ViewBag.User.FirstName</h4>
 </div>
