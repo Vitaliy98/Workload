@@ -3,17 +3,38 @@
 
 @using WorkloadProject.Models;
 @using Microsoft.EntityFrameworkCore
+@model JournalViewModel
 
 <h3>Journal:</h3> <br>
+<br />
+<form method="get">
+    <div class="form-inline">
+        <label class="control-label">Фамилия: </label>
+        @Html.TextBox("surname", Model.FilterViewModel.SelectedSurname, htmlAttributes: new { @class = "form-control" })
+
+        <input type="submit" value="Фильтр" class="btn btn-default" />
+    </div>
+</form>
+<br />
 <table class="table" border="1">
     <tr>
-        <td>Ф.И.О преподавателя</td>
-        <td>Дата</td>
-        <td>Время</td>
-        <td>Занятие</td>
+        <td><a asp-action="Journal"
+   asp-route-sortOrder="@(Model.SortViewModel.SurnameSort)"
+   asp-route-surname="@(Model.FilterViewModel.SelectedSurname)">Ф.И.О преподавателя</a></td>
+        <td><a asp-action="Journal"
+   asp-route-sortOrder="@(Model.SortViewModel.DateSort)"
+   asp-route-surname="@(Model.FilterViewModel.SelectedSurname)">Дата</a></td>
+        <td><a asp-action="Journal"
+   asp-route-sortOrder="@(Model.SortViewModel.TimeSort)"
+   asp-route-surname="@(Model.FilterViewModel.SelectedSurname)">Время</a></td>
+        <td>
+            <a asp-action="Journal"
+               asp-route-sortOrder="@(Model.SortViewModel.SubjectSort)"
+               asp-route-surname="@(Model.FilterViewModel.SelectedSurname)">Занятие</a>
+        </td>
         <td>Тема</td>
     </tr>
-    @foreach (Journal item in ViewBag.Journal)
+    @foreach (Journal item in Model.Journals)
     {
         <tr>
             <td>@item.Lesson.Teacher.Surname @item.Lesson.Teacher.FirstName.First().@item.Lesson.Teacher.MiddleName.First()</td>
@@ -24,4 +45,26 @@
         </tr>
     }
 </table>
+@if (Model.PageViewModel.HasPreviousPage)
+{
+    <a asp-action="Journal"
+       asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+       asp-route-surname="@(Model.FilterViewModel.SelectedSurname)"
+       asp-route-sortorder="@(Model.SortViewModel.Current)"
+       class="btn btn-default btn">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+        Назад
+    </a>
+}
+@if (Model.PageViewModel.HasNextPage)
+{
+    <a asp-action="Journal"
+       asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+       asp-route-surname="@(Model.FilterViewModel.SelectedSurname)"
+       asp-route-sortorder="@(Model.SortViewModel.Current)"
+       class="btn btn-default btn">
+        Вперед
+        <i class="glyphicon glyphicon-chevron-right"></i>
+    </a>
+}
 

@@ -3,6 +3,7 @@
 
 @using WorkloadProject.Models;
 @using Microsoft.EntityFrameworkCore
+@model IndexViewModel
 <br /> <br />
 <div>
     <button id="buttonAddUser" class="secondButton" onclick="showAddUser('block')">Add Teacher</button>
@@ -71,37 +72,40 @@
     </form>
 </div>
 
-<div id="secondWindowDeleteUser" class="secondWindow">
-
-    <img class="close" onclick="showDeleteUser('none')" src="~/images/close.jpg" />
-    <form asp-controller="Home" asp-action="DeleteUser" method="post" class="hiddenForm">
-        <label>Ф.И.О:</label>
-        <select class="form-control" name="teacherId" style="width: 260px; float: right;">
-            @foreach (Teacher item in ViewBag.Teachers)
-            {
-                <option value="@item.Id">@item.Surname @item.FirstName.First().@item.MiddleName.First()</option>
-            }
-        </select>
-        <br><br>
-        <input type="submit" class="formSubmit" value="Удалить" />
-    </form>
-</div>
-<br/><br />
+<br/>
 <h3>Teachers</h3>
+<br />
+<form method="get">
+    <div class="form-inline">
+        <label class="control-label">Фамилия: </label>
+        @Html.TextBox("surname", Model.FilterViewModel.SelectedSurname, htmlAttributes: new { @class = "form-control" })
+
+        <input type="submit" value="Фильтр" class="btn btn-default" />
+    </div>
+</form>
+<br />
 <table class="table" border="1">
     <tr>
         <td>Id</td>
-        <td>FirstName</td>
-        <td>MiddleName</td>
-        <td>Surname</td>
-        <td>Position</td>
+        <td><a asp-action="Teachers"
+   asp-route-sortOrder="@(Model.SortViewModel.FirstNameSort)"
+   asp-route-surname="@(Model.FilterViewModel.SelectedSurname)">First Name</a></td>
+        <td><a asp-action="Teachers"
+   asp-route-sortOrder="@(Model.SortViewModel.MiddleNameSort)"
+   asp-route-surname="@(Model.FilterViewModel.SelectedSurname)">Middle Name</a></td>
+        <td><a asp-action="Teachers"
+   asp-route-sortOrder="@(Model.SortViewModel.SurnameSort)"
+   asp-route-surname="@(Model.FilterViewModel.SelectedSurname)">Surname</a></td>
+        <td><a asp-action="Teachers"
+   asp-route-sortOrder="@(Model.SortViewModel.PositionSort)"
+   asp-route-surname="@(Model.FilterViewModel.SelectedSurname)">Position</a></td>
         <td>Email</td>
         <td>Password</td>
         <td>IsAdmin</td>
         <td></td>
         <td></td>
     </tr>
-    @foreach (Teacher item in ViewBag.Teachers)
+    @foreach (Teacher item in Model.Teachers)
     {
         <tr>
             <td>
@@ -139,3 +143,25 @@
 
     }
 </table>
+@if (Model.PageViewModel.HasPreviousPage)
+{
+    <a asp-action="Teachers"
+       asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+       asp-route-surname="@(Model.FilterViewModel.SelectedSurname)"
+       asp-route-sortorder="@(Model.SortViewModel.Current)"
+       class="btn btn-default btn">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+        Назад
+    </a>
+}
+@if (Model.PageViewModel.HasNextPage)
+{
+    <a asp-action="Teachers"
+       asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+       asp-route-surname="@(Model.FilterViewModel.SelectedSurname)"
+       asp-route-sortorder="@(Model.SortViewModel.Current)"
+       class="btn btn-default btn">
+        Вперед
+        <i class="glyphicon glyphicon-chevron-right"></i>
+    </a>
+}

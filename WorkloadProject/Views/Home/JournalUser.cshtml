@@ -3,10 +3,35 @@
 
 @using WorkloadProject.Models;
 @using Microsoft.EntityFrameworkCore
+@model JournalUserViewModel
 @{
     Layout = "~/Views/Shared/LayoutUser.cshtml";
 }
 <div onclick="hideAllWindows()" id="mainWindow"></div>
+<div id="secondWindowAddExecLesson" class="secondWindow">
+
+    <img class="close" onclick="showAddExecLesson('none')" src="~/images/close.jpg" />
+    <form asp-controller="Home" asp-action="AddExecLesson" method="post" class="hiddenForm">
+        <label>Нагрузка:</label>
+        <select class="form-control" name="lessonId" style="width: 260px; float: right;">
+            @foreach (Lesson lesson in ViewBag.Lessons)
+            {
+                <option value="@lesson.Id">@lesson.Subject.Name (@lesson.TypeLesson.Name)</option>
+            }
+        </select>
+        <br><br>
+        <label>Дата:</label>
+        <input type="text" name="date" maxlength="50" size="31" />
+        <br><br>
+        <label>№ пары:</label>
+        <input type="text" name="lessonNumber" maxlength="50" size="31" />
+        <br><br>
+        <label>Тема:</label>
+        <input type="text" name="theme" maxlength="50" size="31" />
+        <br><br>
+        <input type="submit" class="btn btn-success" value="Добавить" />
+    </form>
+</div>
 <div id="secondWindowChangeExecLesson" class="secondWindow">
 
     <img class="close" onclick="showChangeExecLesson('none',null,null,null)" src="~/images/close.jpg" />
@@ -26,16 +51,38 @@
     <button id="buttonAddExecLesson" class="secondButton" onclick="showAddExecLesson('block')">Add Executed Lesson</button>
 </div>
 <h3>Journal:</h3> <br>
+<br />
+<form method="get">
+    <div class="form-inline">
+        <label class="control-label">Название предмета: </label>
+        @Html.TextBox("subjectName", Model.FilterSubjectsViewModel.SelectedSubjectName, htmlAttributes: new { @class = "form-control" })
+
+        <input type="submit" value="Фильтр" class="btn btn-default" />
+    </div>
+</form>
+<br />
 <table class="table" border="1">
     <tr>
-        <td>Дата</td>
-        <td>Время</td>
-        <td>Занятие</td>
+        <td>
+            <a asp-action="JournalUser"
+               asp-route-sortOrder="@(Model.SortViewModel.DateSort)"
+               asp-route-surname="@(Model.FilterSubjectsViewModel.SelectedSubjectName)">Дата</a>
+        </td>
+        <td>
+            <a asp-action="JournalUser"
+               asp-route-sortOrder="@(Model.SortViewModel.TimeSort)"
+               asp-route-surname="@(Model.FilterSubjectsViewModel.SelectedSubjectName)">Время</a>
+        </td>
+        <td>
+            <a asp-action="JournalUser"
+               asp-route-sortOrder="@(Model.SortViewModel.SubjectSort)"
+               asp-route-surname="@(Model.FilterSubjectsViewModel.SelectedSubjectName)">Занятие</a>
+        </td>
         <td>Тема</td>
         <td></td>
         <td></td>
     </tr>
-    @foreach (Journal item in ViewBag.Journal)
+    @foreach (Journal item in Model.Journals)
     {
         <tr>
             <td>@item.Date.ToShortDateString()</td>
@@ -51,4 +98,26 @@
         </tr>
     }
 </table>
+@if (Model.PageViewModel.HasPreviousPage)
+{
+    <a asp-action="JournalUser"
+       asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+       asp-route-surname="@(Model.FilterSubjectsViewModel.SelectedSubjectName)"
+       asp-route-sortorder="@(Model.SortViewModel.Current)"
+       class="btn btn-default btn">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+        Назад
+    </a>
+}
+@if (Model.PageViewModel.HasNextPage)
+{
+    <a asp-action="JournalUser"
+       asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+       asp-route-surname="@(Model.FilterSubjectsViewModel.SelectedSubjectName)"
+       asp-route-sortorder="@(Model.SortViewModel.Current)"
+       class="btn btn-default btn">
+        Вперед
+        <i class="glyphicon glyphicon-chevron-right"></i>
+    </a>
+}
 

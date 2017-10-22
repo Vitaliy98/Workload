@@ -21,39 +21,228 @@ namespace WorkloadProject.Controllers
             db = context;
         }
         [Authorize(Roles ="admin")]
-        public IActionResult Index()
+        public async Task<IActionResult> Index(string surname, int page = 1, SortState sortOrder = SortState.SurnameAsc)
         {
             ViewBag.Subjects = db.Subjects.ToList();
-            ViewBag.Teachers = db.Teachers.Include(x => x.position).ToList();
             ViewBag.TypeLessons = db.TypeLessons.ToList();
             ViewBag.Positions = db.Positions.ToList();
             IQueryable<Lesson> lessons = db.Lessons.Include(x => x.Subject).Include(x => x.TypeLesson).Include(x => x.Teacher);
             ViewBag.Journal = db.Journals.Include(x => x.TimeLesson).ToList();
             ViewBag.User = db.Teachers.FirstOrDefault(x => x.Email == User.Identity.Name);
-            return View(lessons.ToList());
+
+            ViewBag.Lessons = db.Lessons.ToList();
+
+            ViewBag.Teachers = db.Teachers.ToList();
+
+            int pageSize = 5;
+
+            //фильтрация
+            IQueryable<Teacher> teachers = db.Teachers;
+
+            if (!String.IsNullOrEmpty(surname))
+            {
+                teachers = teachers.Where(p => p.Surname.Contains(surname));
+            }
+
+            // сортировка
+            switch (sortOrder)
+            {
+                case SortState.SurnameDesc:
+                    teachers = teachers.OrderByDescending(s => s.Surname);
+                    break;
+                default:
+                    teachers = teachers.OrderBy(s => s.Surname);
+                    break;
+            }
+
+            // пагинация
+            var count = await teachers.CountAsync();
+            var items = await teachers.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            IndexViewModel viewModel = new IndexViewModel
+            {
+                PageViewModel = new PageViewModel(count, page, pageSize),
+                SortViewModel = new SortViewModel(sortOrder),
+                FilterViewModel = new FilterViewModel(surname),
+                Teachers = items
+            };
+
+            
+            return View(viewModel);
         }
         [Authorize(Roles = "admin")]
-        public IActionResult Teachers()
+        public async Task<IActionResult> Teachers(string surname, int page = 1, SortState sortOrder = SortState.SurnameAsc)
         {
                 ViewBag.Positions = db.Positions.ToList();
-                ViewBag.Teachers = db.Teachers.Include(x => x.position).ToList();
-                return View();
+
+            
+            int pageSize = 5;
+
+            //фильтрация
+            IQueryable<Teacher> teachers = db.Teachers;
+
+            if (!String.IsNullOrEmpty(surname))
+            {
+                teachers = teachers.Where(p => p.Surname.Contains(surname));
+            }
+
+            // сортировка
+            switch (sortOrder)
+            {
+                case SortState.FirstNameDesc:
+                    teachers = teachers.OrderByDescending(s => s.FirstName);
+                    break;
+                case SortState.MiddleNameAsc:
+                    teachers = teachers.OrderBy(s => s.MiddleName);
+                    break;
+                case SortState.MiddleNameDesc:
+                    teachers = teachers.OrderByDescending(s => s.MiddleName);
+                    break;
+                case SortState.SurnameAsc:
+                    teachers = teachers.OrderBy(s => s.Surname);
+                    break;
+                case SortState.SurnameDesc:
+                    teachers = teachers.OrderByDescending(s => s.Surname);
+                    break;
+                case SortState.PositionAsc:
+                    teachers = teachers.OrderBy(s => s.position.Name);
+                    break;
+                case SortState.PositionDesc:
+                    teachers = teachers.OrderByDescending(s => s.position.Name);
+                    break;
+                default:
+                    teachers = teachers.OrderBy(s => s.FirstName);
+                    break;
+            }
+
+            // пагинация
+            var count = await teachers.CountAsync();
+            var items = await teachers.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            IndexViewModel viewModel = new IndexViewModel
+            {
+                PageViewModel = new PageViewModel(count, page, pageSize),
+                SortViewModel = new SortViewModel(sortOrder),
+                FilterViewModel = new FilterViewModel(surname),
+                Teachers = items
+            };
+
+
+            return View(viewModel);
+
         }
         
         [Authorize(Roles = "admin")]
-        public IActionResult Journal()
+        public async Task<IActionResult> Journal(string surname, int page = 1, SortState sortOrder = SortState.SurnameAsc)
         {
-                ViewBag.Journal = db.Journals.Include(x => x.Lesson).Include(x => x.Lesson.Subject).Include(x => x.Lesson.Teacher).
+            int pageSize = 5;
+
+            //фильтрация
+            IQueryable<Journal> journals = db.Journals.Include(x => x.Lesson).Include(x => x.Lesson.Subject).Include(x => x.Lesson.Teacher).
                     Include(x => x.Lesson.TypeLesson).Include(x => x.TimeLesson);
-                return View();
+
+            if (!String.IsNullOrEmpty(surname))
+            {
+                journals = journals.Where(p => p.Lesson.Teacher.Surname.Contains(surname));
+            }
+
+            // сортировка
+            switch (sortOrder)
+            {
+                case SortState.SurnameDesc:
+                    journals = journals.OrderByDescending(s => s.Lesson.Teacher.Surname);
+                    break;
+                case SortState.DateAsc:
+                    journals = journals.OrderBy(s => s.Date);
+                    break;
+                case SortState.DateDesc:
+                    journals = journals.OrderByDescending(s => s.Date);
+                    break;
+                case SortState.TimeAsc:
+                    journals = journals.OrderBy(s => s.TimeLesson.Id);
+                    break;
+                case SortState.TimeDesc:
+                    journals = journals.OrderByDescending(s => s.TimeLesson.Id);
+                    break;
+                case SortState.SubjectAsc:
+                    journals = journals.OrderBy(s => s.Lesson.Subject.Name);
+                    break;
+                case SortState.SubjectDesc:
+                    journals = journals.OrderByDescending(s => s.Lesson.Subject.Name);
+                    break;
+                default:
+                    journals = journals.OrderBy(s => s.Lesson.Teacher.Surname);
+                    break;
+            }
+
+            // пагинация
+            var count = await journals.CountAsync();
+            var items = await journals.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            JournalViewModel viewModel = new JournalViewModel
+            {
+                PageViewModel = new PageViewModel(count, page, pageSize),
+                SortViewModel = new SortViewModel(sortOrder),
+                FilterViewModel = new FilterViewModel(surname),
+                Journals = items
+            };
+
+            return View(viewModel);
         }
         [Authorize(Roles = "user")]
-        public IActionResult JournalUser()
+        public async Task<IActionResult> JournalUser(string subjectName, int page = 1, SortState sortOrder = SortState.SubjectAsc)
         {
             Teacher teacher = db.Teachers.FirstOrDefault(x => x.Email == User.Identity.Name);
-            ViewBag.Journal = db.Journals.Include(x => x.Lesson).Include(x => x.Lesson.Subject).Include(x => x.Lesson.Teacher).
+            ViewBag.Lessons = db.Lessons.Include(x => x.Subject).Include(x => x.TypeLesson).Include(x => x.Teacher).Where(x => x.Teacher.Id == teacher.Id);
+            int pageSize = 5;
+
+            //фильтрация
+            IQueryable<Journal> journals = db.Journals.Include(x => x.Lesson).Include(x => x.Lesson.Subject).Include(x => x.Lesson.Teacher).
                 Include(x => x.Lesson.TypeLesson).Include(x => x.TimeLesson).Where(x => x.Lesson.Teacher.Id == teacher.Id);
-            return View();
+
+
+            if (!String.IsNullOrEmpty(subjectName))
+            {
+                journals = journals.Where(p => p.Lesson.Subject.Name.Contains(subjectName));
+            }
+
+            // сортировка
+            switch (sortOrder)
+            {
+                case SortState.DateAsc:
+                    journals = journals.OrderBy(s => s.Date);
+                    break;
+                case SortState.DateDesc:
+                    journals = journals.OrderByDescending(s => s.Date);
+                    break;
+                case SortState.TimeAsc:
+                    journals = journals.OrderBy(s => s.TimeLesson.Id);
+                    break;
+                case SortState.TimeDesc:
+                    journals = journals.OrderByDescending(s => s.TimeLesson.Id);
+                    break;
+                case SortState.SubjectDesc:
+                    journals = journals.OrderByDescending(s => s.Lesson.Subject.Name);
+                    break;
+                default:
+                    journals = journals.OrderBy(s => s.Lesson.Subject.Name);
+                    break;
+            }
+
+            // пагинация
+            var count = await journals.CountAsync();
+            var items = await journals.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            JournalUserViewModel viewModel = new JournalUserViewModel
+            {
+                PageViewModel = new PageViewModel(count, page, pageSize),
+                SortViewModel = new SortViewModel(sortOrder),
+                FilterSubjectsViewModel = new FilterSubjectsViewModel(subjectName),
+                Journals = items
+            };
+
+
+            return View(viewModel);
         }
         public IActionResult Create()
         {
@@ -91,10 +280,45 @@ namespace WorkloadProject.Controllers
             return View(model);
         }
         [Authorize(Roles = "admin")]
-        public IActionResult Subjects()
+        public async Task<IActionResult> Subjects(string subjectName, int page = 1, SortState sortOrder = SortState.SubjectAsc)
         {
-            ViewBag.Subjects = db.Subjects.ToList();
-            return View();
+
+            int pageSize = 5;
+
+            //фильтрация
+            IQueryable<Subject> subjects = db.Subjects;
+
+            if (!String.IsNullOrEmpty(subjectName))
+            {
+                subjects = subjects.Where(p => p.Name.Contains(subjectName));
+            }
+
+            // сортировка
+            switch (sortOrder)
+            {
+                case SortState.SubjectDesc:
+                    subjects = subjects.OrderByDescending(s => s.Name);
+                    break;
+                default:
+                    subjects = subjects.OrderBy(s => s.Name);
+                    break;
+            }
+
+            // пагинация
+            var count = await subjects.CountAsync();
+            var items = await subjects.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
+
+            SubjectsViewModel viewModel = new SubjectsViewModel
+            {
+                PageViewModel = new PageViewModel(count, page, pageSize),
+                SortViewModel = new SortViewModel(sortOrder),
+                FilterSubjectsViewModel = new FilterSubjectsViewModel(subjectName),
+                Subjects = items
+            };
+
+
+            return View(viewModel);
+
         }
         [Authorize(Roles = "user")]
         public IActionResult UserPage()
@@ -321,7 +545,7 @@ namespace WorkloadProject.Controllers
                 int oldHoursWorked = lesson.HoursWorked;
                 lesson.HoursWorked = oldHoursWorked + 2;
                 await db.SaveChangesAsync();
-                return RedirectToAction("UserPage");
+                return RedirectToAction("JournalUser");
             }
             else
             {
@@ -370,7 +594,7 @@ namespace WorkloadProject.Controllers
                     db.Journals.Remove(journal);
                     lesson.HoursWorked = lesson.HoursWorked - 2;
                     await db.SaveChangesAsync();
-                    return RedirectToAction("UserPage");
+                    return RedirectToAction("JournalUser");
                 }
                 else
                 {

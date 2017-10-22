@@ -3,6 +3,7 @@
 
 @using WorkloadProject.Models;
 @using Microsoft.EntityFrameworkCore
+@model SubjectsViewModel
 <br /> <br />
 <div>
     <button id="buttonActionSubject" class="secondButton" onclick="showAddSubject('block')">Add Subject</button>
@@ -23,37 +24,34 @@
     <img class="close" onclick="showChangeSubject('none', null)" src="~/images/close.jpg" />
     <form asp-controller="Home" asp-action="ChangeSubject" class="hiddenForm">
         <label>Новое Название:</label>
-        <input type="text" name="subjectName" maxlength="50" size="30" />
+        <input type="text" name="subjectName" maxlength="50" size="25" />
         <br><br>
         <input type="hidden" name="subjectId" id="hiddenSubjectId"/>
         <input type="submit" class="formSubmit" value="Изменить" />
     </form>
 </div>
 
-    <div id="secondWindowDeleteSubject" class="secondWindow">
-
-        <img class="close" onclick="showDeleteSubject('none')" src="~/images/close.jpg" />
-        <form asp-controller="Home" asp-action="DeleteSubject" class="hiddenForm">
-            <label>Название:</label>
-            <select class="form-control" name="subjectId" style="width: 260px; float: right;">
-                @foreach (Subject item in ViewBag.Subjects)
-            {
-                    <option value="@item.Id">@item.Name</option>
-                }
-            </select>
-            <br><br>
-            <input type="submit" class="formSubmit" value="Удалить" />
-        </form>
-    </div>
     <h3>Subjects</h3>
+<br />
+<form method="get">
+    <div class="form-inline">
+        <label class="control-label">Название: </label>
+        @Html.TextBox("subjectName", Model.FilterSubjectsViewModel.SelectedSubjectName, htmlAttributes: new { @class = "form-control" })
+
+        <input type="submit" value="Фильтр" class="btn btn-default" />
+    </div>
+</form>
+<br />
     <table class="table" border="1">
         <tr>
             <td>Id</td>
-            <td>Name</td>
+            <td><a asp-action="Subjects"
+   asp-route-sortOrder="@(Model.SortViewModel.SubjectSort)"
+   asp-route-surname="@(Model.FilterSubjectsViewModel.SelectedSubjectName)">Name</a></td>
             <td></td>
             <td></td>
         </tr>
-        @foreach (Subject subject in ViewBag.Subjects)
+        @foreach (Subject subject in Model.Subjects)
         {
             <tr>
                 <td>
@@ -72,3 +70,25 @@
 
         }
     </table>
+@if (Model.PageViewModel.HasPreviousPage)
+{
+    <a asp-action="Subjects"
+       asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+       asp-route-surname="@(Model.FilterSubjectsViewModel.SelectedSubjectName)"
+       asp-route-sortorder="@(Model.SortViewModel.Current)"
+       class="btn btn-default btn">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+        Назад
+    </a>
+}
+@if (Model.PageViewModel.HasNextPage)
+{
+    <a asp-action="Subjects"
+       asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+       asp-route-surname="@(Model.FilterSubjectsViewModel.SelectedSubjectName)"
+       asp-route-sortorder="@(Model.SortViewModel.Current)"
+       class="btn btn-default btn">
+        Вперед
+        <i class="glyphicon glyphicon-chevron-right"></i>
+    </a>
+}

@@ -7,11 +7,11 @@
     int[] arrayOfHoursWorked = GetHoursWorked();
     int[] arrayOfHourLoad = GetHourLoad();
     int[] arrayOfProcentHoursWorked = GetProcentHoursWorked(GetHoursWorked(), GetHourLoad());
-    List<Teacher> listOfTeachers = ViewBag.Teachers;
+    List<Teacher> listOfTeachers = Model.Teachers.ToList();
     Teacher te = null;
     
 }
-@model IEnumerable<Lesson>
+@model IndexViewModel
 <br>
 
 <div onclick="hideAllWindows()" id="mainWindow"></div>
@@ -52,7 +52,7 @@
     <form asp-controller="Home" asp-action="ChangeLesson" method="post" class="hiddenForm">
         <label>Нагрузка:</label>
         <select class="form-control" name="lessonId" style="width: 260px; float: right;">
-            @foreach (Lesson lesson in Model)
+            @foreach (Lesson lesson in ViewBag.Lessons)
              {
                   <option value="@lesson.Id">@lesson.Subject.Name (@lesson.TypeLesson.Name)</option>
              }
@@ -119,19 +119,31 @@
 </div>
     <br><br>
 <h3>Workload:</h3> <br>
+<form method="get">
+    <div class="form-inline">
+        <label class="control-label">Фамилия: </label>
+        @Html.TextBox("surname", Model.FilterViewModel.SelectedSurname, htmlAttributes: new { @class = "form-control" })
+
+        <input type="submit" value="Фильтр" class="btn btn-default" />
+    </div>
+</form>
+<br />
     <table class="table" border="1">
         <tr>
-            <td></td>
-            @foreach (Lesson item in Model)
+            <td><a asp-action="Index"
+                     asp-route-sortOrder="@(Model.SortViewModel.SurnameSort)"
+                     asp-route-surname="@(Model.FilterViewModel.SelectedSurname)">Ф.И.О</a>
+            </td>
+            @foreach (Lesson item in ViewBag.Lessons)
             {
             <td>@item.Subject.Name (@item.TypeLesson.Name)</td>
             }
         </tr>
-        @foreach (Teacher item in ViewBag.Teachers)
+        @foreach (Teacher item in Model.Teachers)
         {
         <tr>
             <td>@item.Surname @item.FirstName.First().@item.MiddleName.First()</td>
-            @foreach (Lesson les in Model)
+            @foreach (Lesson les in ViewBag.Lessons)
                 {
                     if (@les.Teacher.FirstName == item.FirstName && @les.Teacher.MiddleName == @item.MiddleName && @les.Teacher.Surname == @item.Surname)
                     {
@@ -145,6 +157,28 @@
         </tr>
         }
     </table>
+@if (Model.PageViewModel.HasPreviousPage)
+{
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+       asp-route-surname="@(Model.FilterViewModel.SelectedSurname)"
+       asp-route-sortorder="@(Model.SortViewModel.Current)"
+       class="btn btn-default btn">
+        <i class="glyphicon glyphicon-chevron-left"></i>
+        Назад
+    </a>
+}
+@if (Model.PageViewModel.HasNextPage)
+{
+    <a asp-action="Index"
+       asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+       asp-route-surname="@(Model.FilterViewModel.SelectedSurname)"
+       asp-route-sortorder="@(Model.SortViewModel.Current)"
+       class="btn btn-default btn">
+        Вперед
+        <i class="glyphicon glyphicon-chevron-right"></i>
+    </a>
+}
 <h3>Statistics:</h3> <br>
     <div id="Statistics" class="statistics">
         <table class="tableStatistic" border="1">
@@ -175,11 +209,11 @@
     {
         public int[] GetHoursWorked()
         {
-            List<Teacher> listOfTeachers = ViewBag.Teachers;
+            List<Teacher> listOfTeachers = Model.Teachers.ToList();
             int[] arrayOfHoursWorked = new int[listOfTeachers.Count()];
             for (int i = 0; i < listOfTeachers.Count(); i++)
             {
-                foreach (Lesson les in Model)
+                foreach (Lesson les in ViewBag.Lessons)
                 {
                     if (@les.Teacher.FirstName == listOfTeachers.ElementAt(i).FirstName && @les.Teacher.MiddleName == listOfTeachers.ElementAt(i).MiddleName
                         && @les.Teacher.Surname == listOfTeachers.ElementAt(i).Surname)
@@ -192,11 +226,11 @@
         }
         public int[] GetHourLoad()
         {
-            List<Teacher> listOfTeachers = ViewBag.Teachers;
+            List<Teacher> listOfTeachers = Model.Teachers.ToList();
             int[] arrayOfHourLoad = new int[listOfTeachers.Count()];
             for (int i = 0; i < listOfTeachers.Count(); i++)
             {
-                foreach (Lesson les in Model)
+                foreach (Lesson les in ViewBag.Lessons)
                 {
                     if (@les.Teacher.FirstName == listOfTeachers.ElementAt(i).FirstName && @les.Teacher.MiddleName == listOfTeachers.ElementAt(i).MiddleName
                         && @les.Teacher.Surname == listOfTeachers.ElementAt(i).Surname)
@@ -209,7 +243,7 @@
         }
         public int[] GetProcentHoursWorked(int[] arrayOfHoursWorked, int[] arrayOfHourLoad)
         {
-            List<Teacher> listOfTeachers = ViewBag.Teachers;
+            List<Teacher> listOfTeachers = Model.Teachers.ToList();
             int[] arrayOfProcentHoursWorked = new int[listOfTeachers.Count()];
             double secondValue = 0;
             for (int i = 0; i < arrayOfHoursWorked.Length; i++)
