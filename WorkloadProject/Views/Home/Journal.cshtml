@@ -20,19 +20,19 @@
     <tr>
         <td><a asp-action="Journal"
    asp-route-sortOrder="@(Model.SortViewModel.SurnameSort)"
-   asp-route-surname="@(Model.FilterViewModel.SelectedSurname)">Ф.И.О преподавателя</a></td>
+   asp-route-surname="@(Model.FilterViewModel.SelectedSurname)">Teacher Full Name</a></td>
         <td><a asp-action="Journal"
    asp-route-sortOrder="@(Model.SortViewModel.DateSort)"
-   asp-route-surname="@(Model.FilterViewModel.SelectedSurname)">Дата</a></td>
+   asp-route-surname="@(Model.FilterViewModel.SelectedSurname)">Date</a></td>
         <td><a asp-action="Journal"
    asp-route-sortOrder="@(Model.SortViewModel.TimeSort)"
-   asp-route-surname="@(Model.FilterViewModel.SelectedSurname)">Время</a></td>
+   asp-route-surname="@(Model.FilterViewModel.SelectedSurname)">Time</a></td>
         <td>
             <a asp-action="Journal"
                asp-route-sortOrder="@(Model.SortViewModel.SubjectSort)"
-               asp-route-surname="@(Model.FilterViewModel.SelectedSurname)">Занятие</a>
+               asp-route-surname="@(Model.FilterViewModel.SelectedSurname)">Lesson</a>
         </td>
-        <td>Тема</td>
+        <td>Theme</td>
     </tr>
     @foreach (Journal item in Model.Journals)
     {
@@ -53,7 +53,7 @@
        asp-route-sortorder="@(Model.SortViewModel.Current)"
        class="btn btn-default btn">
         <i class="glyphicon glyphicon-chevron-left"></i>
-        Назад
+        Back
     </a>
 }
 @if (Model.PageViewModel.HasNextPage)
@@ -63,7 +63,7 @@
        asp-route-surname="@(Model.FilterViewModel.SelectedSurname)"
        asp-route-sortorder="@(Model.SortViewModel.Current)"
        class="btn btn-default btn">
-        Вперед
+        Next
         <i class="glyphicon glyphicon-chevron-right"></i>
     </a>
 }

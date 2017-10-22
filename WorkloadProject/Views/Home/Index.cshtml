@@ -19,7 +19,7 @@
 
     <img class="close" onclick="showAddWorkload('none')" src="~/images/close.jpg" />
     <form  asp-controller="Home" asp-action="CreateLesson" method="post" class="hiddenForm">
-            <label>Ф.И.О:</label>
+            <label>Full Name:</label>
             <select class="form-control" name="teacherId" style="width: 260px; float: right;">
                 @foreach (Teacher item in ViewBag.Teachers)
                  {
@@ -28,7 +28,7 @@
                  }
             </select>
             <br><br>
-            <label>Предмет:</label>
+            <label>Subject:</label>
             <select class="form-control" name="subjectId" style="width: 260px; float: right;">
                 @foreach (Subject item in ViewBag.Subjects)
                  {
@@ -36,13 +36,13 @@
                  }
             </select>
             <br><br>
-            <label>Практ. часы:</label>
+            <label>Pract. hours:</label>
              <input type="text" name="PractHourLoad" maxlength="50" size="31" />
             <br><br>
-            <label>Лекц. часы:</label>
+            <label>Lect. hours:</label>
             <input type="text" name="LectHourLoad" maxlength="50" size="31" />
             <br><br>
-            <input type="submit" class="btn btn-success" value="Добавить" />
+            <input type="submit" class="btn btn-success" value="Add" />
     </form>
 </div>
 
@@ -50,7 +50,7 @@
 
     <img class="close" onclick="showChangeWorkload('none')" src="~/images/close.jpg" />
     <form asp-controller="Home" asp-action="ChangeLesson" method="post" class="hiddenForm">
-        <label>Нагрузка:</label>
+        <label>Workload:</label>
         <select class="form-control" name="lessonId" style="width: 260px; float: right;">
             @foreach (Lesson lesson in ViewBag.Lessons)
              {
@@ -58,7 +58,7 @@
              }
         </select>
         <br><br>
-        <label>Ф.И.О:</label>
+        <label>Full Name:</label>
         <select class="form-control" name="teacherId" style="width: 260px; float: right;">
             @foreach (Teacher item in ViewBag.Teachers)
             {
@@ -66,10 +66,10 @@
             }
         </select>
         <br><br>
-        <label>Часы:</label>
+        <label>Hours:</label>
         <input type="text" name="hourLoad" maxlength="50" size="31" />
         <br><br>
-        <input type="submit" class="btn btn-success" value="Изменить" />
+        <input type="submit" class="btn btn-success" value="Change" />
     </form>
 </div>
 
@@ -78,7 +78,7 @@
 
     <img class="close" onclick="showDeleteWorkload('none')" src="~/images/close.jpg" />
     <form asp-controller="Home" asp-action="DeleteLesson" method="post" class="hiddenForm">
-        <label>Ф.И.О:</label>
+        <label>Full Name:</label>
         <select class="form-control" name="teacherId" style="width: 260px; float: right;">
             @foreach (Teacher item in ViewBag.Teachers)
             {
@@ -86,7 +86,7 @@
             }
         </select>
         <br><br>
-        <label>Предмет:</label>
+        <label>Subject:</label>
         <select class="form-control" name="subjectId" style="width: 260px; float: right;">
             @foreach (Subject item in ViewBag.Subjects)
             {
@@ -94,7 +94,7 @@
             }
         </select>
         <br><br>
-        <label>Тип занятия:</label>
+        <label>Type lesson:</label>
         <select class="form-control" name="typeLessonId" style="width: 260px; float: right;">
             @foreach (TypeLesson item in ViewBag.TypeLessons)
             {
@@ -102,7 +102,7 @@
             }
         </select>
         <br><br>
-        <input type="submit" class="formSubmit" value="Удалить" />
+        <input type="submit" class="formSubmit" value="Delete" />
     </form>
 </div>
 
@@ -121,10 +121,10 @@
 <h3>Workload:</h3> <br>
 <form method="get">
     <div class="form-inline">
-        <label class="control-label">Фамилия: </label>
+        <label class="control-label">Surname: </label>
         @Html.TextBox("surname", Model.FilterViewModel.SelectedSurname, htmlAttributes: new { @class = "form-control" })
 
-        <input type="submit" value="Фильтр" class="btn btn-default" />
+        <input type="submit" value="Filter" class="btn btn-default" />
     </div>
 </form>
 <br />
@@ -165,7 +165,7 @@
        asp-route-sortorder="@(Model.SortViewModel.Current)"
        class="btn btn-default btn">
         <i class="glyphicon glyphicon-chevron-left"></i>
-        Назад
+        Back
     </a>
 }
 @if (Model.PageViewModel.HasNextPage)
@@ -175,7 +175,7 @@
        asp-route-surname="@(Model.FilterViewModel.SelectedSurname)"
        asp-route-sortorder="@(Model.SortViewModel.Current)"
        class="btn btn-default btn">
-        Вперед
+        Next
         <i class="glyphicon glyphicon-chevron-right"></i>
     </a>
 }

@@ -13,21 +13,21 @@
 
         <img class="close" onclick="showAddSubject('none')" src="~/images/close.jpg" />
         <form asp-controller="Home" asp-action="AddSubject" method="post" class="hiddenForm">
-            <label>Название:</label>
+            <label>Name:</label>
             <input type="text" name="subjectName" maxlength="50" size="30" />
             <br><br>
-            <input type="submit" class="formSubmit" value="Добавить" />
+            <input type="submit" class="formSubmit" value="Add" />
         </form>
     </div>
 <div id="secondWindowChangeSubject" class="secondWindow">
 
     <img class="close" onclick="showChangeSubject('none', null)" src="~/images/close.jpg" />
     <form asp-controller="Home" asp-action="ChangeSubject" class="hiddenForm">
-        <label>Новое Название:</label>
+        <label>New Name:</label>
         <input type="text" name="subjectName" maxlength="50" size="25" />
         <br><br>
         <input type="hidden" name="subjectId" id="hiddenSubjectId"/>
-        <input type="submit" class="formSubmit" value="Изменить" />
+        <input type="submit" class="formSubmit" value="Change" />
     </form>
 </div>
 
@@ -35,10 +35,10 @@
 <br />
 <form method="get">
     <div class="form-inline">
-        <label class="control-label">Название: </label>
+        <label class="control-label">Name: </label>
         @Html.TextBox("subjectName", Model.FilterSubjectsViewModel.SelectedSubjectName, htmlAttributes: new { @class = "form-control" })
 
-        <input type="submit" value="Фильтр" class="btn btn-default" />
+        <input type="submit" value="Filter" class="btn btn-default" />
     </div>
 </form>
 <br />
@@ -61,10 +61,10 @@
                     @subject.Name
                 </td>
                 <td>
-                    <a href="javascript:showChangeSubject('block', @subject.Id)">Изменить</a>
+                    <a href="javascript:showChangeSubject('block', @subject.Id)">Change</a>
                 </td>
                 <td>
-                    <a asp-controller="Home" asp-action="DeleteSubject" method="post" asp-route-subjectId="@subject.Id">Удалить</a>
+                    <a asp-controller="Home" asp-action="DeleteSubject" method="post" asp-route-subjectId="@subject.Id">Delete</a>
                 </td>
             </tr>
 
@@ -78,7 +78,7 @@
        asp-route-sortorder="@(Model.SortViewModel.Current)"
        class="btn btn-default btn">
         <i class="glyphicon glyphicon-chevron-left"></i>
-        Назад
+        Back
     </a>
 }
 @if (Model.PageViewModel.HasNextPage)
@@ -88,7 +88,7 @@
        asp-route-surname="@(Model.FilterSubjectsViewModel.SelectedSubjectName)"
        asp-route-sortorder="@(Model.SortViewModel.Current)"
        class="btn btn-default btn">
-        Вперед
+        Next
         <i class="glyphicon glyphicon-chevron-right"></i>
     </a>
 }

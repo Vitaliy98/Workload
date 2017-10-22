@@ -332,6 +332,7 @@ namespace WorkloadProject.Controllers
             return View(lessons.ToList());
         }
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> CreateLesson(int teacherId, int subjectId, int PractHourLoad, int LectHourLoad)
         {
             Lesson lesson = null;
@@ -380,6 +381,7 @@ namespace WorkloadProject.Controllers
                 return RedirectToAction("Index");
             }
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteLesson(int teacherId, int subjectId, int typeLessonId)
         {
            Lesson lesson = db.Lessons.FirstOrDefault(p => p.Teacher.Id == teacherId && p.Subject.Id == subjectId && p.TypeLesson.Id == typeLessonId);
@@ -392,6 +394,7 @@ namespace WorkloadProject.Controllers
             return NotFound("Workload not found");
         }
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> AddSubject(string subjectName)
         {
             Subject subject = db.Subjects.FirstOrDefault(p => p.Name == subjectName);
@@ -407,6 +410,7 @@ namespace WorkloadProject.Controllers
             }
         }
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> ChangeSubject(int subjectId,string subjectName)
         {
             Subject subject = db.Subjects.FirstOrDefault(p => p.Id == subjectId);
@@ -422,6 +426,7 @@ namespace WorkloadProject.Controllers
             }
         }
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteSubject(int subjectId)
         {
             Subject subject = db.Subjects.FirstOrDefault(p => p.Id == subjectId);
@@ -434,6 +439,7 @@ namespace WorkloadProject.Controllers
             return NotFound("Subject not found");
         }
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> AddUser(string surname, string firstName, string middleName, int positionId, string email, string password)
         {
             Teacher teacher = db.Teachers.FirstOrDefault(x => x.Surname == surname && x.FirstName == firstName && x.MiddleName == middleName);
@@ -465,6 +471,7 @@ namespace WorkloadProject.Controllers
             }
         }
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteUser(int teacherId)
         {
             Teacher teacher = db.Teachers.FirstOrDefault(p => p.Id == teacherId);
@@ -477,6 +484,7 @@ namespace WorkloadProject.Controllers
             return NotFound("Teacher not found");
         }
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> ChangeLesson(int lessonId,int teacherId, int hourLoad)
         {
             Teacher teacher = db.Teachers.FirstOrDefault(p => p.Id == teacherId);
@@ -490,6 +498,7 @@ namespace WorkloadProject.Controllers
             return NotFound("Workload not found");
         }
         [HttpPost]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> ChangeUser(string surname, string firstName, string middleName, int positionId, string email, string password, int teacherId)
         {
             Teacher currentTeacher = db.Teachers.FirstOrDefault(x => x.Id == teacherId);
@@ -529,6 +538,7 @@ namespace WorkloadProject.Controllers
         }
         
         [HttpPost]
+        [Authorize(Roles = "user")]
         public async Task<IActionResult> AddExecLesson(int lessonId, string date, int lessonNumber, string theme)
         {
             TimeLesson timeLesson = db.TimeLessons.FirstOrDefault(x => x.Id == lessonNumber);
@@ -553,6 +563,7 @@ namespace WorkloadProject.Controllers
             }
         }
         [HttpPost]
+        [Authorize(Roles = "user")]
         public async Task<IActionResult> ChangeExecLesson(int lessonId, string date, int lessonNumber, string newTheme)
         {
             Lesson lesson = db.Lessons.FirstOrDefault(x => x.Id == lessonId);
@@ -577,6 +588,7 @@ namespace WorkloadProject.Controllers
             }
         }
         [HttpGet]
+        [Authorize(Roles = "user")]
         public async Task<IActionResult> DeleteExecLesson(int lessonId, string date, int lessonNumber)
         {
             Lesson lesson = db.Lessons.FirstOrDefault(x => x.Id == lessonId);
@@ -602,6 +614,7 @@ namespace WorkloadProject.Controllers
                 }
             }
         }
+        [Authorize(Roles = "user")]
         public IActionResult ProfilUser()
         {
             ViewBag.User = db.Teachers.Include(x => x.position).FirstOrDefault(x => x.Email == User.Identity.Name);
@@ -609,6 +622,7 @@ namespace WorkloadProject.Controllers
         }
     
         [HttpPost]
+        [Authorize(Roles = "user")]
         public async Task<IActionResult> ChangeProfil(string surname, string firstName, string middleName, string email, string password)
         {
             Teacher currentTeacher = db.Teachers.FirstOrDefault(x => x.Email == User.Identity.Name);

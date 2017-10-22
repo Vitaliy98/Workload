@@ -13,16 +13,16 @@
 
     <img class="close" onclick="showAddUser('none')" src="~/images/close.jpg" />
     <form asp-controller="Home" asp-action="AddUser" method="post" class="hiddenForm">
-        <label>Фамилия:</label>
+        <label>Surname:</label>
         <input type="text" name="surname" maxlength="50" size="30" />
         <br><br>
-        <label>Имя:</label>
+        <label>First Name:</label>
         <input type="text" name="firstName" maxlength="50" size="30" />
         <br><br>
-        <label>Отчество:</label>
+        <label>Middle Name:</label>
         <input type="text" name="middleName" maxlength="50" size="30" />
         <br><br>
-        <label>Должность:</label>
+        <label>Position:</label>
         <select class="form-control" name="positionId" style="width: 250px; float: right;">
             @foreach (Position item in ViewBag.Positions)
             {
@@ -33,10 +33,10 @@
         <label>E-mail:</label>
         <input type="text" name="email" maxlength="50" size="30" />
         <br><br>
-        <label>Пароль:</label>
+        <label>Password:</label>
         <input type="text" name="password" maxlength="50" size="30" />
         <br><br>
-        <input type="submit" class="formSubmit" value="Добавить" />
+        <input type="submit" class="formSubmit" value="Add" />
     </form>
 </div>
 
@@ -44,16 +44,16 @@
 
     <img class="close" onclick="showChangeUser('none', null, null, null, null, null, null, null)" src="~/images/close.jpg" />
     <form asp-controller="Home" asp-action="ChangeUser" name="ChangeUserForm" method="post" class="hiddenForm">
-        <label>Фамилия:</label>
+        <label>Surname:</label>
         <input type="text" name="surname" id="Surname" maxlength="50" size="31" />
         <br><br>
-        <label>Имя:</label>
+        <label>First Name:</label>
         <input type="text" name="firstName" id="FirstName" maxlength="50" size="31" />
         <br><br>
-        <label>Отчество:</label>
+        <label>Middle Name:</label>
         <input type="text" name="middleName" id="MiddleName" maxlength="50" size="31" />
         <br><br>
-        <label>Должность:</label>
+        <label>Position:</label>
         <select class="form-control" name="positionId" id="Position" style="width: 250px; float: right;">
             @foreach (Position item in ViewBag.Positions)
             {
@@ -64,11 +64,11 @@
         <label>Email:</label>
         <input type="text" name="email" id="Email" maxlength="50" size="31" />
         <br><br>
-        <label>Пароль:</label>
+        <label>Password:</label>
         <input type="text" name="password" id="Password" maxlength="50" size="31" />
         <br><br>
         <input type="hidden" name="teacherId" id="TeacherId" />
-        <input type="submit" class="formSubmit" value="Изменить" />
+        <input type="submit" class="formSubmit" value="Change" />
     </form>
 </div>
 
@@ -77,10 +77,10 @@
 <br />
 <form method="get">
     <div class="form-inline">
-        <label class="control-label">Фамилия: </label>
+        <label class="control-label">Surname: </label>
         @Html.TextBox("surname", Model.FilterViewModel.SelectedSurname, htmlAttributes: new { @class = "form-control" })
 
-        <input type="submit" value="Фильтр" class="btn btn-default" />
+        <input type="submit" value="Filter" class="btn btn-default" />
     </div>
 </form>
 <br />
@@ -134,10 +134,10 @@
             </td>
             <td>
                 <a href="javascript:showChangeUser('block', '@item.FirstName', '@item.MiddleName', '@item.Surname','@item.position.Id',
-                   '@item.Email', '@item.Password', '@item.Id')">Изменить</a>
+                   '@item.Email', '@item.Password', '@item.Id')">Change</a>
             </td>
             <td>
-                <a asp-controller="Home" asp-action="DeleteUser" method="post" asp-route-teacherId="@item.Id">Удалить</a>
+                <a asp-controller="Home" asp-action="DeleteUser" method="post" asp-route-teacherId="@item.Id">Delete</a>
             </td>
         </tr>
 
@@ -151,7 +151,7 @@
        asp-route-sortorder="@(Model.SortViewModel.Current)"
        class="btn btn-default btn">
         <i class="glyphicon glyphicon-chevron-left"></i>
-        Назад
+        Back
     </a>
 }
 @if (Model.PageViewModel.HasNextPage)
@@ -161,7 +161,7 @@
        asp-route-surname="@(Model.FilterViewModel.SelectedSurname)"
        asp-route-sortorder="@(Model.SortViewModel.Current)"
        class="btn btn-default btn">
-        Вперед
+        Next
         <i class="glyphicon glyphicon-chevron-right"></i>
     </a>
 }

@@ -16,22 +16,22 @@
 
     <img class="close" onclick="showChangeProfil('none', null, null, null, null, null)" src="~/images/close.jpg" />
     <form asp-controller="Home" asp-action="ChangeProfil" method="post" class="hiddenForm">
-        <label>Фамилия:</label>
+        <label>Surname:</label>
         <input type="text" name="surname" id="Surname" maxlength="50" size="31" />
         <br><br>
-        <label>Имя:</label>
+        <label>First Name:</label>
         <input type="text" name="firstName" id="FirstName" maxlength="50" size="31" />
         <br><br>
-        <label>Отчество:</label>
+        <label>Middle Name:</label>
         <input type="text" name="middleName" id="MiddleName" maxlength="50" size="31" />
         <br><br>
         <label>Email:</label>
         <input type="text" name="email" id="Email" maxlength="50" size="31" />
         <br><br>
-        <label>Пароль:</label>
+        <label>Password:</label>
         <input type="text" name="password" id="Password" maxlength="50" size="31" />
         <br><br>
-        <input type="submit" class="btn btn-success" value="Изменить" />
+        <input type="submit" class="btn btn-success" value="Change" />
     </form>
 </div>
 

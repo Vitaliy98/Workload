@@ -12,7 +12,7 @@
 
     <img class="close" onclick="showAddExecLesson('none')" src="~/images/close.jpg" />
     <form asp-controller="Home" asp-action="AddExecLesson" method="post" class="hiddenForm">
-        <label>Нагрузка:</label>
+        <label>Workload:</label>
         <select class="form-control" name="lessonId" style="width: 260px; float: right;">
             @foreach (Lesson lesson in ViewBag.Lessons)
             {
@@ -20,16 +20,16 @@
             }
         </select>
         <br><br>
-        <label>Дата:</label>
+        <label>Date:</label>
         <input type="text" name="date" maxlength="50" size="31" />
         <br><br>
-        <label>№ пары:</label>
+        <label>Lesson number:</label>
         <input type="text" name="lessonNumber" maxlength="50" size="31" />
         <br><br>
-        <label>Тема:</label>
+        <label>Theme:</label>
         <input type="text" name="theme" maxlength="50" size="31" />
         <br><br>
-        <input type="submit" class="btn btn-success" value="Добавить" />
+        <input type="submit" class="btn btn-success" value="Add" />
     </form>
 </div>
 <div id="secondWindowChangeExecLesson" class="secondWindow">
@@ -40,10 +40,10 @@
         <input type="hidden" name="date" id="hiddenDate" />
         <input type="hidden" name="lessonNumber" id="hiddenLessonNumber" />
         <br><br>
-        <label>Новая тема:</label>
+        <label>New theme:</label>
         <input type="text" name="newTheme" maxlength="50" size="31" />
         <br><br>
-        <input type="submit" class="btn btn-success" value="Изменить" />
+        <input type="submit" class="btn btn-success" value="Change" />
     </form>
 </div>
 <br><br>
@@ -54,7 +54,7 @@
 <br />
 <form method="get">
     <div class="form-inline">
-        <label class="control-label">Название предмета: </label>
+        <label class="control-label">Subject name: </label>
         @Html.TextBox("subjectName", Model.FilterSubjectsViewModel.SelectedSubjectName, htmlAttributes: new { @class = "form-control" })
 
         <input type="submit" value="Фильтр" class="btn btn-default" />
@@ -66,19 +66,19 @@
         <td>
             <a asp-action="JournalUser"
                asp-route-sortOrder="@(Model.SortViewModel.DateSort)"
-               asp-route-surname="@(Model.FilterSubjectsViewModel.SelectedSubjectName)">Дата</a>
+               asp-route-surname="@(Model.FilterSubjectsViewModel.SelectedSubjectName)">Date</a>
         </td>
         <td>
             <a asp-action="JournalUser"
                asp-route-sortOrder="@(Model.SortViewModel.TimeSort)"
-               asp-route-surname="@(Model.FilterSubjectsViewModel.SelectedSubjectName)">Время</a>
+               asp-route-surname="@(Model.FilterSubjectsViewModel.SelectedSubjectName)">Time</a>
         </td>
         <td>
             <a asp-action="JournalUser"
                asp-route-sortOrder="@(Model.SortViewModel.SubjectSort)"
-               asp-route-surname="@(Model.FilterSubjectsViewModel.SelectedSubjectName)">Занятие</a>
+               asp-route-surname="@(Model.FilterSubjectsViewModel.SelectedSubjectName)">Lesson</a>
         </td>
-        <td>Тема</td>
+        <td>Theme</td>
         <td></td>
         <td></td>
     </tr>
@@ -90,10 +90,10 @@
             <td>@item.Lesson.Subject.Name (@item.Lesson.TypeLesson.Name)</td>
             <td>@item.Theme</td>
             <td>
-                <a href="javascript:showChangeExecLesson('block', @item.Lesson.Id, '@item.Date.ToString()', @item.TimeLesson.Id)">Изменить</a>
+                <a href="javascript:showChangeExecLesson('block', @item.Lesson.Id, '@item.Date.ToString()', @item.TimeLesson.Id)">Change</a>
             </td>
             <td>
-                <a asp-controller="Home" asp-action="DeleteExecLesson" asp-route-lessonId="@item.Lesson.Id" asp-route-date="@item.Date" asp-route-lessonNumber="@item.TimeLesson.Id">Удалить</a>
+                <a asp-controller="Home" asp-action="DeleteExecLesson" asp-route-lessonId="@item.Lesson.Id" asp-route-date="@item.Date" asp-route-lessonNumber="@item.TimeLesson.Id">Delete</a>
             </td>
         </tr>
     }
@@ -106,7 +106,7 @@
        asp-route-sortorder="@(Model.SortViewModel.Current)"
        class="btn btn-default btn">
         <i class="glyphicon glyphicon-chevron-left"></i>
-        Назад
+        Back
     </a>
 }
 @if (Model.PageViewModel.HasNextPage)
@@ -116,7 +116,7 @@
        asp-route-surname="@(Model.FilterSubjectsViewModel.SelectedSubjectName)"
        asp-route-sortorder="@(Model.SortViewModel.Current)"
        class="btn btn-default btn">
-        Вперед
+        Next
         <i class="glyphicon glyphicon-chevron-right"></i>
     </a>
 }
