@@ -4,6 +4,7 @@
 @using WorkloadProject.Models;
 @using Microsoft.EntityFrameworkCore
 @model IndexViewModel
+@addTagHelper "*, WorkloadProject"
 <br /> <br />
 <div>
     <button id="buttonAddUser" class="secondButton" onclick="showAddUser('block')">Add Teacher</button>
@@ -143,25 +144,4 @@
 
     }
 </table>
-@if (Model.PageViewModel.HasPreviousPage)
-{
-    <a asp-action="Teachers"
-       asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
-       asp-route-surname="@(Model.FilterViewModel.SelectedSurname)"
-       asp-route-sortorder="@(Model.SortViewModel.Current)"
-       class="btn btn-default btn">
-        <i class="glyphicon glyphicon-chevron-left"></i>
-        Back
-    </a>
-}
-@if (Model.PageViewModel.HasNextPage)
-{
-    <a asp-action="Teachers"
-       asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
-       asp-route-surname="@(Model.FilterViewModel.SelectedSurname)"
-       asp-route-sortorder="@(Model.SortViewModel.Current)"
-       class="btn btn-default btn">
-        Next
-        <i class="glyphicon glyphicon-chevron-right"></i>
-    </a>
-}
+<page-link page-model="Model.PageViewModel" page-action="Teachers"></page-link>

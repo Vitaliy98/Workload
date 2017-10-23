@@ -4,7 +4,7 @@
 @using WorkloadProject.Models;
 @using Microsoft.EntityFrameworkCore
 @model JournalViewModel
-
+@addTagHelper "*, WorkloadProject"
 <h3>Journal:</h3> <br>
 <br />
 <form method="get">
@@ -45,26 +45,5 @@
         </tr>
     }
 </table>
-@if (Model.PageViewModel.HasPreviousPage)
-{
-    <a asp-action="Journal"
-       asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
-       asp-route-surname="@(Model.FilterViewModel.SelectedSurname)"
-       asp-route-sortorder="@(Model.SortViewModel.Current)"
-       class="btn btn-default btn">
-        <i class="glyphicon glyphicon-chevron-left"></i>
-        Back
-    </a>
-}
-@if (Model.PageViewModel.HasNextPage)
-{
-    <a asp-action="Journal"
-       asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
-       asp-route-surname="@(Model.FilterViewModel.SelectedSurname)"
-       asp-route-sortorder="@(Model.SortViewModel.Current)"
-       class="btn btn-default btn">
-        Next
-        <i class="glyphicon glyphicon-chevron-right"></i>
-    </a>
-}
+<page-link page-model="Model.PageViewModel" page-action="Journal"></page-link>
 

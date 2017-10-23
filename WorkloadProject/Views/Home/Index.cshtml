@@ -2,6 +2,7 @@
 <script src="~/js/showWindowsAdmin.js"></script>
 @using WorkloadProject.Models;
 @using Microsoft.EntityFrameworkCore
+@addTagHelper "*, WorkloadProject"
 @{ 
     ViewBag.Title = "Workload";
     int[] arrayOfHoursWorked = GetHoursWorked();
@@ -157,28 +158,7 @@
         </tr>
         }
     </table>
-@if (Model.PageViewModel.HasPreviousPage)
-{
-    <a asp-action="Index"
-       asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
-       asp-route-surname="@(Model.FilterViewModel.SelectedSurname)"
-       asp-route-sortorder="@(Model.SortViewModel.Current)"
-       class="btn btn-default btn">
-        <i class="glyphicon glyphicon-chevron-left"></i>
-        Back
-    </a>
-}
-@if (Model.PageViewModel.HasNextPage)
-{
-    <a asp-action="Index"
-       asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
-       asp-route-surname="@(Model.FilterViewModel.SelectedSurname)"
-       asp-route-sortorder="@(Model.SortViewModel.Current)"
-       class="btn btn-default btn">
-        Next
-        <i class="glyphicon glyphicon-chevron-right"></i>
-    </a>
-}
+<page-link page-model="Model.PageViewModel" page-action="Index"></page-link>
 <h3>Statistics:</h3> <br>
     <div id="Statistics" class="statistics">
         <table class="tableStatistic" border="1">

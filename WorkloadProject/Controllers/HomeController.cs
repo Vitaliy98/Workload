@@ -59,9 +59,10 @@ namespace WorkloadProject.Controllers
             var count = await teachers.CountAsync();
             var items = await teachers.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
+            PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
             IndexViewModel viewModel = new IndexViewModel
             {
-                PageViewModel = new PageViewModel(count, page, pageSize),
+                PageViewModel = pageViewModel,
                 SortViewModel = new SortViewModel(sortOrder),
                 FilterViewModel = new FilterViewModel(surname),
                 Teachers = items
@@ -119,9 +120,10 @@ namespace WorkloadProject.Controllers
             var count = await teachers.CountAsync();
             var items = await teachers.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
+            PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
             IndexViewModel viewModel = new IndexViewModel
             {
-                PageViewModel = new PageViewModel(count, page, pageSize),
+                PageViewModel = pageViewModel,
                 SortViewModel = new SortViewModel(sortOrder),
                 FilterViewModel = new FilterViewModel(surname),
                 Teachers = items
@@ -179,9 +181,10 @@ namespace WorkloadProject.Controllers
             var count = await journals.CountAsync();
             var items = await journals.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
+            PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
             JournalViewModel viewModel = new JournalViewModel
             {
-                PageViewModel = new PageViewModel(count, page, pageSize),
+                PageViewModel = pageViewModel,
                 SortViewModel = new SortViewModel(sortOrder),
                 FilterViewModel = new FilterViewModel(surname),
                 Journals = items
@@ -233,9 +236,10 @@ namespace WorkloadProject.Controllers
             var count = await journals.CountAsync();
             var items = await journals.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
+            PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
             JournalUserViewModel viewModel = new JournalUserViewModel
             {
-                PageViewModel = new PageViewModel(count, page, pageSize),
+                PageViewModel = pageViewModel,
                 SortViewModel = new SortViewModel(sortOrder),
                 FilterSubjectsViewModel = new FilterSubjectsViewModel(subjectName),
                 Journals = items
@@ -308,9 +312,10 @@ namespace WorkloadProject.Controllers
             var count = await subjects.CountAsync();
             var items = await subjects.Skip((page - 1) * pageSize).Take(pageSize).ToListAsync();
 
+            PageViewModel pageViewModel = new PageViewModel(count, page, pageSize);
             SubjectsViewModel viewModel = new SubjectsViewModel
             {
-                PageViewModel = new PageViewModel(count, page, pageSize),
+                PageViewModel = pageViewModel,
                 SortViewModel = new SortViewModel(sortOrder),
                 FilterSubjectsViewModel = new FilterSubjectsViewModel(subjectName),
                 Subjects = items
