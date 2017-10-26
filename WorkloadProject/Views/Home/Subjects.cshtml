@@ -22,10 +22,10 @@
     </div>
 <div id="secondWindowChangeSubject" class="secondWindow">
 
-    <img class="close" onclick="showChangeSubject('none', null)" src="~/images/close.jpg" />
+    <img class="close" onclick="showChangeSubject('none', null,null)" src="~/images/close.jpg" />
     <form asp-controller="Home" asp-action="ChangeSubject" class="hiddenForm">
-        <label>New Name:</label>
-        <input type="text" name="subjectName" maxlength="50" size="25" />
+        <label>Name:</label>
+        <input type="text" name="subjectName" id="SubjectName" maxlength="50" size="25" />
         <br><br>
         <input type="hidden" name="subjectId" id="hiddenSubjectId"/>
         <input type="submit" class="formSubmit" value="Change" />
@@ -62,7 +62,7 @@
                     @subject.Name
                 </td>
                 <td>
-                    <a href="javascript:showChangeSubject('block', @subject.Id)">Change</a>
+                    <a href="javascript:showChangeSubject('block', @subject.Id,'@subject.Name')">Change</a>
                 </td>
                 <td>
                     <a asp-controller="Home" asp-action="DeleteSubject" method="post" asp-route-subjectId="@subject.Id">Delete</a>

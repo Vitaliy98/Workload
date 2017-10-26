@@ -4,11 +4,12 @@ function showAddSubject(state) {
     document.getElementById('secondWindowAddSubject').style.display = state;
     document.getElementById('mainWindow').style.display = state;
 }
-function showChangeSubject(state,subjectId) {
+function showChangeSubject(state,subjectId,subjectName) {
 
     document.getElementById('secondWindowChangeSubject').style.display = state;
     document.getElementById('mainWindow').style.display = state;
     document.getElementById('hiddenSubjectId').value = subjectId;
+    document.getElementById('SubjectName').value = subjectName;
 }
 function showDeleteSubject(state) {
 
@@ -20,13 +21,14 @@ function showAddExecLesson(state) {
     document.getElementById('secondWindowAddExecLesson').style.display = state;
     document.getElementById('mainWindow').style.display = state;
 }
-function showChangeExecLesson(state, lessonId, date, lessonNumber) {
+function showChangeExecLesson(state, lessonId, date, lessonNumber, theme) {
 
     document.getElementById('secondWindowChangeExecLesson').style.display = state;
     document.getElementById('mainWindow').style.display = state;
     document.getElementById('hiddenLessonId').value = lessonId;
     document.getElementById('hiddenDate').value = date;
     document.getElementById('hiddenLessonNumber').value = lessonNumber;
+    document.getElementById('Theme').value = theme;
 }
 function showDeleteExecLesson(state) {
 

@@ -41,8 +41,8 @@
         <input type="hidden" name="date" id="hiddenDate" />
         <input type="hidden" name="lessonNumber" id="hiddenLessonNumber" />
         <br><br>
-        <label>New theme:</label>
-        <input type="text" name="newTheme" maxlength="50" size="31" />
+        <label>Theme:</label>
+        <input type="text" name="newTheme" id="Theme" maxlength="50" size="31" />
         <br><br>
         <input type="submit" class="btn btn-success" value="Change" />
     </form>
@@ -91,7 +91,7 @@
             <td>@item.Lesson.Subject.Name (@item.Lesson.TypeLesson.Name)</td>
             <td>@item.Theme</td>
             <td>
-                <a href="javascript:showChangeExecLesson('block', @item.Lesson.Id, '@item.Date.ToString()', @item.TimeLesson.Id)">Change</a>
+                <a href="javascript:showChangeExecLesson('block', @item.Lesson.Id, '@item.Date.ToString()', @item.TimeLesson.Id, '@item.Theme')">Change</a>
             </td>
             <td>
                 <a asp-controller="Home" asp-action="DeleteExecLesson" asp-route-lessonId="@item.Lesson.Id" asp-route-date="@item.Date" asp-route-lessonNumber="@item.TimeLesson.Id">Delete</a>
